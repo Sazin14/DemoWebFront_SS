@@ -23,9 +23,13 @@ export default function SocialButtons() {
         <button
           type="button"
           onClick={() => handleProviderClick("Google")}
-          className="flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
+          className="group flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-400 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:translate-y-0"
         >
-          <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            className="size-4 transition-transform duration-300 group-hover:scale-110"
+            aria-hidden="true"
+          >
             <path
               fill="#4285F4"
               d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"
@@ -48,11 +52,11 @@ export default function SocialButtons() {
         <button
           type="button"
           onClick={() => handleProviderClick("GitHub")}
-          className="flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
+          className="group flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-400 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:translate-y-0"
         >
           <svg
             viewBox="0 0 24 24"
-            className="size-4"
+            className="size-4 transition-transform duration-300 group-hover:scale-110"
             fill="currentColor"
             aria-hidden="true"
           >
@@ -62,7 +66,7 @@ export default function SocialButtons() {
         </button>
       </div>
       {notice && (
-        <p role="status" className="mt-3 text-center text-xs text-zinc-500">
+        <p role="status" className="mt-3 animate-fade-in text-center text-xs text-zinc-500">
           {notice}
         </p>
       )}

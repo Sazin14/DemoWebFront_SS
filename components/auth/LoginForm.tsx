@@ -77,10 +77,10 @@ export default function LoginForm() {
       {formMessage && (
         <div
           role={formMessage.variant === "error" ? "alert" : "status"}
-          className={`mb-6 flex items-start gap-2.5 rounded-lg border px-3.5 py-3 text-sm ${
+          className={`mb-6 flex animate-fade-up items-start gap-2.5 rounded-xl border px-3.5 py-3 text-sm shadow-sm ${
             formMessage.variant === "error"
               ? "border-red-200 bg-red-50 text-red-800"
-              : "border-zinc-200 bg-zinc-50 text-zinc-700"
+              : "border-indigo-200 bg-indigo-50/80 text-indigo-900"
           }`}
         >
           {formMessage.variant === "error" ? (
@@ -116,14 +116,14 @@ export default function LoginForm() {
             }}
             aria-invalid={fieldErrors.email ? true : undefined}
             aria-describedby={fieldErrors.email ? "email-error" : undefined}
-            className={`mt-1.5 block w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-zinc-900 transition-shadow placeholder:text-zinc-400 focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60 ${
+            className={`mt-1.5 block w-full rounded-xl border bg-white/80 px-3.5 py-2.5 text-sm text-zinc-900 shadow-sm transition-all duration-300 placeholder:text-zinc-400 hover:border-zinc-400 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 ${
               fieldErrors.email
-                ? "border-red-500 focus:border-red-500 focus:ring-red-500/15"
-                : "border-zinc-300 focus:border-zinc-950 focus:ring-zinc-950/10"
+                ? "border-red-400 focus:border-red-500 focus:ring-red-500/15"
+                : "border-zinc-300 focus:border-indigo-500 focus:ring-indigo-500/15"
             }`}
           />
           {fieldErrors.email && (
-            <p id="email-error" role="alert" className="mt-1.5 text-sm text-red-600">
+            <p id="email-error" role="alert" className="mt-1.5 animate-shake text-sm text-red-600">
               {fieldErrors.email}
             </p>
           )}
@@ -165,7 +165,7 @@ export default function LoginForm() {
             <p
               id="password-error"
               role="alert"
-              className="mt-1.5 text-sm text-red-600"
+              className="mt-1.5 animate-shake text-sm text-red-600"
             >
               {fieldErrors.password}
             </p>
@@ -173,19 +173,19 @@ export default function LoginForm() {
         </div>
 
         <div className="flex items-center justify-between gap-4">
-          <label className="flex select-none items-center gap-2 text-sm text-zinc-600">
+          <label className="flex cursor-pointer select-none items-center gap-2 text-sm text-zinc-600 transition-colors hover:text-zinc-900">
             <input
               type="checkbox"
               checked={rememberMe}
               disabled={isSubmitting}
               onChange={(event) => setRememberMe(event.target.checked)}
-              className="size-4 rounded border-zinc-300 accent-zinc-950"
+              className="size-4 cursor-pointer rounded border-zinc-300 accent-indigo-600 transition-transform duration-200 hover:scale-110"
             />
             Remember me
           </label>
           <Link
             href="/auth/forgot-password"
-            className="text-sm font-medium text-zinc-900 underline-offset-4 hover:underline"
+            className="relative text-sm font-medium text-zinc-900 transition-colors duration-300 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-indigo-600 after:transition-all after:duration-300 hover:text-indigo-600 hover:after:w-full"
           >
             Forgot password?
           </Link>
@@ -194,25 +194,31 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-950 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 disabled:cursor-not-allowed disabled:opacity-70"
+          className="group relative flex w-full animate-gradient-x items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_auto] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-600/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:-translate-y-0"
         >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-              Signing in…
-            </>
-          ) : (
-            "Sign in"
-          )}
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+          />
+          <span className="relative flex items-center gap-2">
+            {isSubmitting ? (
+              <>
+                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                Signing in…
+              </>
+            ) : (
+              "Sign in"
+            )}
+          </span>
         </button>
       </div>
 
       <div className="my-6 flex items-center gap-3" aria-hidden="true">
-        <span className="h-px flex-1 bg-zinc-200" />
+        <span className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
         <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">
           or continue with
         </span>
-        <span className="h-px flex-1 bg-zinc-200" />
+        <span className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
       </div>
 
       <SocialButtons />
@@ -221,7 +227,7 @@ export default function LoginForm() {
         New to EcomMS?{" "}
         <Link
           href="/auth/register"
-          className="font-semibold text-zinc-950 underline-offset-4 hover:underline"
+          className="relative font-semibold text-indigo-600 transition-colors duration-300 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-indigo-500 after:transition-all after:duration-300 hover:text-indigo-500 hover:after:w-full"
         >
           Create an account
         </Link>

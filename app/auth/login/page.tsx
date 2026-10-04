@@ -10,16 +10,21 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <>
-      <header className="mb-8">
+      <header className="mb-8 animate-fade-up">
         <h1 className="text-2xl font-semibold tracking-tight text-zinc-950">
-          Welcome back
+          Welcome{" "}
+          <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-500 bg-clip-text text-transparent">
+            back
+          </span>
         </h1>
         <p className="mt-2 text-sm leading-6 text-zinc-600">
           Sign in to your account to continue shopping, track orders, and
           manage your wishlist.
         </p>
       </header>
-      <LoginForm />
+      <div className="animate-fade-up [animation-delay:150ms]">
+        <LoginForm />
+      </div>
     </>
   );
 }
