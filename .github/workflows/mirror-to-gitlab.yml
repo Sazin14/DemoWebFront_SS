@@ -11,9 +11,10 @@ jobs:
     steps:
       - name: Mirror repository
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
-          git clone --mirror https://github.com/${{ github.repository }}.git repo.git
+          git clone --mirror https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git repo.git
 
           cd repo.git
 
