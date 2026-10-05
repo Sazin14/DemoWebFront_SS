@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AlertCircle, Info, Loader2 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 import PasswordInput from "./PasswordInput";
 import SocialButtons from "./SocialButtons";
 
@@ -16,14 +18,12 @@ interface FormMessage {
   text: string;
 }
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 function validateFields(email: string, password: string): FieldErrors {
   const errors: FieldErrors = {};
 
   if (!email.trim()) {
     errors.email = "Email address is required.";
-  } else if (!EMAIL_PATTERN.test(email.trim())) {
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     errors.email = "Enter a valid email address.";
   }
 
@@ -35,16 +35,17 @@ function validateFields(email: string, password: string): FieldErrors {
 }
 
 export default function LoginForm() {
+  const { initializationError, isReady, login } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [formMessage, setFormMessage] = useState<FormMessage | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (isSubmitting) return;
+    if (isSubmitting || !isReady || initializationError) return;
 
     const errors = validateFields(email, password);
     setFieldErrors(errors);
@@ -54,41 +55,39 @@ export default function LoginForm() {
     setFormMessage(null);
 
     try {
-      // TODO(task: auth-api-integration): POST { email, password, rememberMe }
-      // to the Auth service login endpoint, then persist the returned JWT.
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-
-      setFormMessage({
-        variant: "info",
-        text: "Sign-in is not connected to the authentication service yet. This is a UI preview.",
-      });
-    } catch {
+      const user = login(email, password);
+      router.replace(user.role === "admin" ? "/admin" : "/account");
+    } catch (error) {
       setFormMessage({
         variant: "error",
-        text: "Something went wrong while signing you in. Please try again.",
+        text:
+          error instanceof Error
+            ? error.message
+            : "Something went wrong while signing you in. Please try again.",
       });
-    } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit} noValidate aria-busy={isSubmitting}>
-      {formMessage && (
+      {(formMessage || initializationError) && (
         <div
-          role={formMessage.variant === "error" ? "alert" : "status"}
+          role="alert"
           className={`mb-6 flex animate-fade-up items-start gap-2.5 rounded-xl border px-3.5 py-3 text-sm shadow-sm ${
-            formMessage.variant === "error"
+            formMessage?.variant === "error" || initializationError
               ? "border-red-200 bg-red-50 text-red-800"
               : "border-indigo-200 bg-indigo-50/80 text-indigo-900"
           }`}
         >
-          {formMessage.variant === "error" ? (
+          {formMessage?.variant === "error" || initializationError ? (
             <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           ) : (
             <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           )}
-          <p className="leading-5">{formMessage.text}</p>
+          <p className="leading-5">
+            {initializationError ?? formMessage?.text}
+          </p>
         </div>
       )}
 
@@ -107,7 +106,7 @@ export default function LoginForm() {
             autoComplete="email"
             placeholder="you@example.com"
             value={email}
-            disabled={isSubmitting}
+            disabled={!isReady || Boolean(initializationError) || isSubmitting}
             onChange={(event) => {
               setEmail(event.target.value);
               if (fieldErrors.email) {
@@ -143,7 +142,7 @@ export default function LoginForm() {
               autoComplete="current-password"
               placeholder="Enter your password"
               value={password}
-              disabled={isSubmitting}
+              disabled={!isReady || Boolean(initializationError) || isSubmitting}
               hasError={Boolean(fieldErrors.password)}
               onChange={(event) => {
                 setPassword(event.target.value);
@@ -173,16 +172,7 @@ export default function LoginForm() {
         </div>
 
         <div className="flex items-center justify-between gap-4">
-          <label className="flex cursor-pointer select-none items-center gap-2 text-sm text-zinc-600 transition-colors hover:text-zinc-900">
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              disabled={isSubmitting}
-              onChange={(event) => setRememberMe(event.target.checked)}
-              className="size-4 cursor-pointer rounded border-zinc-300 accent-indigo-600 transition-transform duration-200 hover:scale-110"
-            />
-            Remember me
-          </label>
+          <span className="text-xs text-zinc-500">Session saved on this browser</span>
           <Link
             href="/auth/forgot-password"
             className="relative text-sm font-medium text-zinc-900 transition-colors duration-300 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-indigo-600 after:transition-all after:duration-300 hover:text-indigo-600 hover:after:w-full"
@@ -191,9 +181,14 @@ export default function LoginForm() {
           </Link>
         </div>
 
+        <p className="mt-5 text-center text-xs leading-5 text-zinc-500">
+          Temporary browser-only sign-in. Do not use a real password; this is
+          not production authentication.
+        </p>
+
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={!isReady || Boolean(initializationError) || isSubmitting}
           className="group relative flex w-full animate-gradient-x items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_auto] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-600/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:-translate-y-0"
         >
           <span
@@ -204,7 +199,7 @@ export default function LoginForm() {
             {isSubmitting ? (
               <>
                 <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                Signing in…
+                Logging in…
               </>
             ) : (
               "Sign in"

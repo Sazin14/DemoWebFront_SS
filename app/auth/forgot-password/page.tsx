@@ -5,7 +5,7 @@ import { KeyRound } from "lucide-react";
 export const metadata: Metadata = {
   title: "Forgot password",
   description:
-    "Reset the password for your EcomMS account via a secure email link.",
+    "Learn about password recovery availability for your EcomMS account.",
 };
 
 export default function ForgotPasswordPage() {
@@ -19,8 +19,8 @@ export default function ForgotPasswordPage() {
           </span>
         </h1>
         <p className="mt-2 text-sm leading-6 text-zinc-600">
-          Enter the email linked to your account and we&apos;ll send you a
-          secure reset link.
+          Password recovery will be available once account services are
+          connected.
         </p>
       </header>
 
@@ -29,8 +29,8 @@ export default function ForgotPasswordPage() {
           <KeyRound className="size-4" aria-hidden="true" />
         </span>
         <p className="text-sm leading-6 text-zinc-600">
-          Password reset is coming soon. This feature will be enabled once the
-          authentication service is connected.
+          No reset email has been sent. Connect the authentication service to
+          enable password recovery.
         </p>
       </div>
 

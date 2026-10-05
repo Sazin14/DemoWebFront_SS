@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthActions from "@/components/auth/AuthActions";
 import {
   ArrowRight,
   CreditCard,
@@ -49,20 +50,7 @@ export default function Home() {
           </span>
           <span className="text-lg font-semibold tracking-tight">EcomMS</span>
         </Link>
-        <nav className="flex items-center gap-2 sm:gap-3">
-          <Link
-            href="/auth/login"
-            className="rounded-lg px-3.5 py-2 text-sm font-medium text-zinc-700 transition-colors duration-300 hover:text-indigo-600"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/auth/register"
-            className="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-indigo-600 hover:shadow-lg hover:shadow-indigo-600/30"
-          >
-            Get started
-          </Link>
-        </nav>
+        <AuthActions />
       </header>
 
       {/* Hero */}

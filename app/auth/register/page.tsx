@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { UserPlus } from "lucide-react";
+import RegisterForm from "@/components/auth/RegisterForm";
 
 export const metadata: Metadata = {
   title: "Create account",
@@ -24,14 +24,10 @@ export default function RegisterPage() {
         </p>
       </header>
 
-      <div className="group flex animate-fade-up items-start gap-3.5 rounded-xl border border-indigo-200/70 bg-gradient-to-br from-indigo-50/80 via-white to-fuchsia-50/60 px-4 py-4 shadow-sm transition-all duration-300 [animation-delay:150ms] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-100">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white shadow-md shadow-indigo-500/30 transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110">
-          <UserPlus className="size-4" aria-hidden="true" />
-        </span>
-        <p className="text-sm leading-6 text-zinc-600">
-          Registration is on the way. The sign-up form will be available once
-          the authentication service is connected.
-        </p>
+      <RegisterForm />
+      <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-900">
+        Preview only: accounts and passwords are stored insecurely in this
+        browser. Do not use a real password.
       </div>
 
       <p className="mt-8 animate-fade-up text-center text-sm text-zinc-600 [animation-delay:250ms]">
