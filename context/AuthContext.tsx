@@ -15,8 +15,8 @@ interface AuthContextValue {
   currentUser: User | null;
   isReady: boolean;
   initializationError: string | null;
-  login: (email: string, password: string) => User;
-  register: (name: string, email: string, password: string) => User;
+  login: (email: string, password: string) => Promise<User>;
+  register: (name: string, email: string, password: string) => Promise<User>;
   logout: () => void;
 }
 
@@ -47,13 +47,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => window.clearTimeout(initialize);
   }, []);
 
-  const login = useCallback((email: string, password: string) => {
+  const login = useCallback(async (email: string, password: string) => {
     const user = authService.login(email, password);
     setCurrentUser(user);
     return user;
   }, []);
 
-  const register = useCallback((name: string, email: string, password: string) => {
+  const register = useCallback(async (name: string, email: string, password: string) => {
     const user = authService.register(name, email, password);
     setCurrentUser(user);
     return user;

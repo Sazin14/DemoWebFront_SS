@@ -5,9 +5,13 @@ import {
   saveCurrentUser,
   saveStoredUsers,
 } from "./storage";
-import type { StoredUser, User } from "./types";
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { AuthError, type StoredUser, type User } from "./types";
+import {
+  normalizeEmail,
+  validateEmail,
+  validateName,
+  validatePassword,
+} from "./validation";
 
 function toPublicUser(user: StoredUser): User {
   return {
@@ -24,14 +28,14 @@ export function getCurrentUser(): User | null {
 }
 
 export function login(email: string, password: string): User {
-  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedEmail = normalizeEmail(email);
   const matchingUser = getStoredUsers().find(
     (user) =>
       user.email === normalizedEmail && user.password === password,
   );
 
   if (!matchingUser) {
-    throw new Error("Invalid email or password.");
+    throw new AuthError("INVALID_CREDENTIALS", "Invalid email or password.");
   }
 
   const user = toPublicUser(matchingUser);
@@ -41,21 +45,20 @@ export function login(email: string, password: string): User {
 
 export function register(name: string, email: string, password: string): User {
   const normalizedName = name.trim();
-  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedEmail = normalizeEmail(email);
 
-  if (normalizedName.length < 2) {
-    throw new Error("Enter a name with at least 2 characters.");
-  }
-  if (!EMAIL_PATTERN.test(normalizedEmail)) {
-    throw new Error("Enter a valid email address.");
-  }
-  if (password.length < 8) {
-    throw new Error("Your password must be at least 8 characters.");
-  }
+  const validationMessage =
+    validateName(normalizedName) ??
+    validateEmail(normalizedEmail) ??
+    validatePassword(password);
+  if (validationMessage) throw new AuthError("VALIDATION", validationMessage);
 
   const users = getStoredUsers();
   if (users.some((user) => user.email === normalizedEmail)) {
-    throw new Error("An account with this email already exists. Please log in instead.");
+    throw new AuthError(
+      "EMAIL_EXISTS",
+      "An account with this email already exists.",
+    );
   }
 
   const newUser: StoredUser = {

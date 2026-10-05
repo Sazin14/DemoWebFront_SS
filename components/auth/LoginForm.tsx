@@ -43,7 +43,7 @@ export default function LoginForm() {
   const [formMessage, setFormMessage] = useState<FormMessage | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (isSubmitting || !isReady || initializationError) return;
 
@@ -55,7 +55,7 @@ export default function LoginForm() {
     setFormMessage(null);
 
     try {
-      const user = login(email, password);
+      const user = await login(email, password);
       router.replace(user.role === "admin" ? "/admin" : "/account");
     } catch (error) {
       setFormMessage({

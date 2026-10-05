@@ -25,7 +25,7 @@ export default function PasswordInput({
       <input
         {...props}
         type={isVisible ? "text" : "password"}
-        className={`block w-full rounded-xl border bg-white/80 py-2.5 pl-3.5 pr-11 text-sm text-zinc-900 shadow-sm transition-all duration-300 placeholder:text-zinc-400 hover:border-zinc-400 focus:outline-none focus:ring-4 ${
+        className={`block w-full rounded-xl border bg-white/80 py-2.5 pl-3.5 pr-11 text-base text-zinc-900 sm:text-sm shadow-sm transition-all duration-300 placeholder:text-zinc-400 hover:border-zinc-400 focus:outline-none focus:ring-4 ${
           hasError
             ? "border-red-400 focus:border-red-500 focus:ring-red-500/15"
             : "border-zinc-300 focus:border-indigo-500 focus:ring-indigo-500/15"
