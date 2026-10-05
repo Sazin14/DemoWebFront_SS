@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
-export default function AuthActions() {
+export default function AuthActions({ stacked = false }: { stacked?: boolean }) {
   const { currentUser, isReady, logout } = useAuth();
   const router = useRouter();
 
@@ -14,18 +14,21 @@ export default function AuthActions() {
 
   if (!currentUser) {
     return (
-      <nav aria-label="Account" className="flex items-center gap-2 sm:gap-3">
+      <nav
+        aria-label="Account"
+        className={stacked ? "flex flex-col gap-2" : "flex items-center gap-2 sm:gap-3"}
+      >
         <Link
           href="/auth/login"
           className="rounded-lg px-3.5 py-2 text-sm font-medium text-zinc-700 transition-colors duration-300 hover:text-indigo-600"
         >
-          Sign in
+          Log in
         </Link>
         <Link
           href="/auth/register"
           className="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-indigo-600 hover:shadow-lg hover:shadow-indigo-600/30"
         >
-          Get started
+          Create account
         </Link>
       </nav>
     );
@@ -40,8 +43,11 @@ export default function AuthActions() {
   }
 
   return (
-    <nav aria-label="Account" className="flex items-center gap-2 sm:gap-4">
-      <span className="hidden text-sm text-zinc-600 sm:inline">
+    <nav
+      aria-label="Account"
+      className={stacked ? "flex flex-col gap-2" : "flex items-center gap-2 sm:gap-4"}
+    >
+      <span className={stacked ? "text-sm text-zinc-600" : "hidden text-sm text-zinc-600 sm:inline"}>
         Hi, <span className="font-semibold text-zinc-900">{currentUser.name}</span>
       </span>
       <Link

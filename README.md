@@ -12,3 +12,9 @@ The temporary admin account is `admin@ecomms.local` with password
 connected and must never be used as a production credential. New registrations
 are customer accounts, and their accounts remain in the current browser after
 logout.
+
+## Products & cart (frontend-only, temporary)
+
+- `/products`, `/products/[slug]`, `/cart` and a placeholder `/checkout` use **mock data** from `lib/products/mock-data.ts`, accessed only through `lib/products/product-service.ts`. Replace the service bodies with Product API calls later; components don't change.
+- Prices, stock, ratings and reviews are **sample data**. The cart (`ecomms_cart` in localStorage) stores snapshots and is **not authoritative**: a backend must re-validate prices and stock at checkout.
+- Product images in `public/products/` are generated placeholder illustrations.

@@ -1,10 +1,9 @@
 import Link from "next/link";
-import AuthActions from "@/components/auth/AuthActions";
+import SiteHeader from "@/components/layout/SiteHeader";
 import {
   ArrowRight,
   CreditCard,
   ShieldCheck,
-  ShoppingBag,
   Sparkles,
   Star,
   Truck,
@@ -42,16 +41,7 @@ export default function Home() {
         <div className="absolute bottom-0 left-1/3 size-80 animate-blob rounded-full bg-violet-300/40 blur-3xl [animation-delay:9s]" />
       </div>
 
-      {/* Nav */}
-      <header className="relative z-10 mx-auto flex w-full max-w-6xl animate-fade-up items-center justify-between px-6 py-5">
-        <Link href="/" className="group inline-flex items-center gap-2.5">
-          <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-500 text-white shadow-lg shadow-indigo-600/30 transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110">
-            <ShoppingBag className="size-4.5" aria-hidden="true" />
-          </span>
-          <span className="text-lg font-semibold tracking-tight">EcomMS</span>
-        </Link>
-        <AuthActions />
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
       <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
@@ -77,7 +67,7 @@ export default function Home() {
 
         <div className="mt-9 flex animate-fade-up flex-col items-center gap-3 [animation-delay:400ms] sm:flex-row">
           <Link
-            href="/auth/register"
+            href="/products"
             className="group relative inline-flex animate-gradient-x items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_auto] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-600/40"
           >
             <span
@@ -96,7 +86,7 @@ export default function Home() {
             href="/auth/login"
             className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 bg-white/80 px-6 py-3 text-sm font-semibold text-zinc-800 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-md"
           >
-            Sign in
+            Log in
           </Link>
         </div>
 
