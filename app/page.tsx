@@ -32,20 +32,20 @@ const features = [
 
 export default function Home() {
   return (
-    <div className="relative flex flex-1 flex-col overflow-hidden bg-white text-zinc-900">
+    <div className="relative flex flex-1 flex-col overflow-hidden bg-surface text-fg">
       {/* Animated backdrop */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(rgba(99,102,241,0.08)_1px,transparent_1px)] [background-size:28px_28px]" />
-        <div className="absolute -left-24 -top-32 size-[26rem] animate-blob rounded-full bg-indigo-300/40 blur-3xl" />
-        <div className="absolute -right-24 top-1/4 size-96 animate-blob rounded-full bg-fuchsia-300/40 blur-3xl [animation-delay:5s]" />
-        <div className="absolute bottom-0 left-1/3 size-80 animate-blob rounded-full bg-violet-300/40 blur-3xl [animation-delay:9s]" />
+        <div className="absolute -left-24 -top-32 size-[26rem] animate-blob rounded-full bg-indigo-300/40 blur-3xl dark:opacity-25" />
+        <div className="absolute -right-24 top-1/4 size-96 animate-blob rounded-full bg-fuchsia-300/40 blur-3xl dark:opacity-25 [animation-delay:5s]" />
+        <div className="absolute bottom-0 left-1/3 size-80 animate-blob rounded-full bg-violet-300/40 blur-3xl dark:opacity-25 [animation-delay:9s]" />
       </div>
 
       <SiteHeader />
 
       {/* Hero */}
       <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
-        <div className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-indigo-200/70 bg-white/70 px-4 py-1.5 text-xs font-medium text-indigo-700 shadow-sm backdrop-blur [animation-delay:100ms]">
+        <div className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-accent/30 bg-surface/70 px-4 py-1.5 text-xs font-medium text-accent-ink shadow-sm backdrop-blur [animation-delay:100ms]">
           <Sparkles
             className="size-3.5 animate-pulse-soft"
             aria-hidden="true"
@@ -60,7 +60,7 @@ export default function Home() {
           </span>
         </h1>
 
-        <p className="mt-5 max-w-xl animate-fade-up text-base leading-7 text-zinc-600 [animation-delay:300ms] sm:text-lg">
+        <p className="mt-5 max-w-xl animate-fade-up text-base leading-7 text-fg-muted [animation-delay:300ms] sm:text-lg">
           Shop thousands of products from trusted sellers with secure checkout
           and delivery you can follow door to door.
         </p>
@@ -84,14 +84,14 @@ export default function Home() {
           </Link>
           <Link
             href="/auth/login"
-            className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 bg-white/80 px-6 py-3 text-sm font-semibold text-zinc-800 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-md"
+            className="inline-flex items-center gap-2 rounded-xl border border-line-strong bg-surface/80 px-6 py-3 text-sm font-semibold text-fg shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:text-accent-ink hover:shadow-md"
           >
             Log in
           </Link>
         </div>
 
         {/* Social proof */}
-        <div className="mt-10 flex animate-fade-up items-center gap-2 text-sm text-zinc-500 [animation-delay:500ms]">
+        <div className="mt-10 flex animate-fade-up items-center gap-2 text-sm text-fg-subtle [animation-delay:500ms]">
           <span className="flex" aria-hidden="true">
             {Array.from({ length: 5 }).map((_, index) => (
               <Star
@@ -101,8 +101,7 @@ export default function Home() {
             ))}
           </span>
           <span>
-            <span className="font-semibold text-zinc-800">4.9/5</span> from
-            12,000+ happy shoppers
+            Sample rating shown for demo purposes only
           </span>
         </div>
 
@@ -112,7 +111,7 @@ export default function Home() {
             <div
               key={feature.title}
               style={{ animationDelay: `${600 + index * 140}ms` }}
-              className="group animate-fade-up rounded-2xl border border-zinc-200/80 bg-white/70 p-6 text-left shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-100"
+              className="group animate-fade-up rounded-2xl border border-line bg-surface/70 p-6 text-left shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/30 hover:shadow-xl hover:shadow-accent/10"
             >
               <span className="flex size-11 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500 text-white shadow-md shadow-indigo-500/30 transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110">
                 <feature.icon className="size-5" aria-hidden="true" />
@@ -120,7 +119,7 @@ export default function Home() {
               <h2 className="mt-4 text-base font-semibold tracking-tight">
                 {feature.title}
               </h2>
-              <p className="mt-1.5 text-sm leading-6 text-zinc-600">
+              <p className="mt-1.5 text-sm leading-6 text-fg-muted">
                 {feature.description}
               </p>
             </div>
@@ -128,7 +127,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="relative z-10 mx-auto w-full max-w-6xl animate-fade-up px-6 py-6 text-center text-xs text-zinc-500 [animation-delay:900ms]">
+      <footer className="relative z-10 mx-auto w-full max-w-6xl animate-fade-up px-6 py-6 text-center text-xs text-fg-subtle [animation-delay:900ms]">
         &copy; {new Date().getFullYear()} EcomMS. All rights reserved.
       </footer>
     </div>

@@ -17,6 +17,8 @@ import {
 import type { Product } from "@/lib/products/types";
 import FilterDrawer from "./FilterDrawer";
 import ProductFilters from "./ProductFilters";
+import DemoBadge from "@/components/feedback/DemoBadge";
+import ProductCard from "./ProductCard";
 import ProductGrid from "./ProductGrid";
 
 const PAGE_SIZE = 12;
@@ -85,6 +87,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
 
   const results = useMemo(() => applyFilters(products, filters), [products, filters]);
   const visible = results.slice(0, visibleLimit);
+  const featured = useMemo(() => products.filter((p) => p.featured).slice(0, 8), [products]);
   const activeCount = countActiveFilters(filters);
   const criteria = hasActiveCriteria(filters);
   const searchActive = filters.query !== "";
@@ -102,21 +105,24 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-zinc-500">
+      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-fg-subtle">
         <ol className="flex items-center gap-1.5">
           <li>
-            <Link href="/" className="hover:text-indigo-600">Home</Link>
+            <Link href="/" className="hover:text-accent-ink">Home</Link>
           </li>
           <ChevronRight className="size-3.5" aria-hidden="true" />
-          <li aria-current="page" className="font-medium text-zinc-800">Products</li>
+          <li aria-current="page" className="font-medium text-fg">Products</li>
         </ol>
       </nav>
 
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          {searchActive ? `Results for “${filters.query}”` : "All products"}
-        </h1>
-        <p className="text-sm text-zinc-600" role="status" aria-live="polite">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            {searchActive ? `Results for “${filters.query}”` : "All products"}
+          </h1>
+          <DemoBadge label="Demo data" />
+        </div>
+        <p className="text-sm text-fg-muted" role="status" aria-live="polite">
           {results.length} {results.length === 1 ? "product" : "products"}
         </p>
       </div>
@@ -124,7 +130,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <label htmlFor="catalog-search" className="sr-only">Search products</label>
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-zinc-400" aria-hidden="true" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-fg-subtle" aria-hidden="true" />
           <input
             id="catalog-search"
             type="search"
@@ -132,14 +138,14 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
             onChange={(event) => handleSearchChange(event.target.value)}
             placeholder="Search products…"
             autoComplete="off"
-            className="h-12 w-full rounded-xl border border-zinc-300 bg-white pl-10 pr-11 text-base text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 sm:text-sm [&::-webkit-search-cancel-button]:hidden"
+            className="field h-12 pl-10 pr-11 [&::-webkit-search-cancel-button]:hidden"
           />
           {searchText && (
             <button
               type="button"
               onClick={clearSearch}
               aria-label="Clear search"
-              className="absolute right-1.5 top-1/2 inline-flex size-9 -translate-y-1/2 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+              className="absolute right-1.5 top-1/2 inline-flex size-9 -translate-y-1/2 items-center justify-center rounded-lg text-fg-subtle hover:bg-surface-sunken hover:text-fg"
             >
               <X className="size-4" aria-hidden="true" />
             </button>
@@ -150,7 +156,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-white px-4 text-sm font-semibold text-zinc-800 hover:border-indigo-300 lg:hidden"
+            className="btn btn-secondary h-12 flex-1 lg:hidden"
           >
             <SlidersHorizontal className="size-4" aria-hidden="true" />
             Filters{activeCount > 0 ? ` (${activeCount})` : ""}
@@ -161,7 +167,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
               id="catalog-sort"
               value={filters.sort}
               onChange={(event) => update({ sort: event.target.value as CatalogFilters["sort"] })}
-              className="h-12 w-full rounded-xl border border-zinc-300 bg-white px-3 text-base text-zinc-800 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 sm:w-56 sm:text-sm"
+              className="field h-12 sm:w-56"
             >
               {SORT_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -181,7 +187,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
                 type="button"
                 onClick={chip.remove}
                 aria-label={`Remove filter ${chip.label}`}
-                className="inline-flex h-8 items-center gap-1.5 rounded-full bg-indigo-50 px-3 text-xs font-medium text-indigo-700 hover:bg-indigo-100"
+                className="inline-flex h-8 items-center gap-1.5 rounded-full bg-accent-soft px-3 text-xs font-medium text-accent-ink hover:bg-accent-soft/70"
               >
                 {chip.label}
                 <X className="size-3" aria-hidden="true" />
@@ -189,7 +195,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
             </li>
           ))}
           <li>
-            <button type="button" onClick={clearAll} className="h-8 px-2 text-xs font-semibold text-zinc-600 underline-offset-2 hover:text-indigo-600 hover:underline">
+            <button type="button" onClick={clearAll} className="h-8 px-2 text-xs font-semibold text-fg-muted underline-offset-2 hover:text-accent-ink hover:underline">
               Clear all
             </button>
           </li>
@@ -202,7 +208,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
             <div className="flex items-center justify-between">
               <h2 className="text-base font-semibold">Filters</h2>
               {criteria && (
-                <button type="button" onClick={clearAll} className="text-xs font-semibold text-indigo-600 hover:underline">
+                <button type="button" onClick={clearAll} className="text-xs font-semibold text-accent-ink hover:underline">
                   Clear all
                 </button>
               )}
@@ -212,9 +218,23 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
         </aside>
 
         <section aria-label="Product results" className="min-w-0 flex-1">
+          {!criteria && featured.length > 0 && (
+            <section aria-labelledby="featured-heading" className="mb-8">
+              <h2 id="featured-heading" className="mb-3 text-lg font-semibold">
+                Featured picks
+              </h2>
+              <ul className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 sm:mx-0 sm:gap-4 sm:px-0">
+                {featured.map((product) => (
+                  <li key={product.id} className="flex w-44 shrink-0 snap-start sm:w-52">
+                    <ProductCard product={product} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           {results.length === 0 ? (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-zinc-300 bg-white px-6 py-16 text-center">
-              <span className="flex size-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600">
+            <div className="flex animate-reveal flex-col items-center rounded-2xl border border-dashed border-line-strong bg-surface px-6 py-16 text-center">
+              <span className="flex size-14 items-center justify-center rounded-2xl bg-accent-soft text-accent-ink">
                 <Search className="size-6" aria-hidden="true" />
               </span>
               <h2 className="mt-4 text-lg font-semibold">
@@ -222,7 +242,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
                   ? "No products found"
                   : "No products match your filters"}
               </h2>
-              <p className="mt-1 max-w-sm text-sm text-zinc-600">
+              <p className="mt-1 max-w-sm text-sm text-fg-muted">
                 {searchActive
                   ? `We couldn’t find anything for “${filters.query}”. Check the spelling or try a broader search.`
                   : "Try removing a filter or two to see more products."}
@@ -230,17 +250,17 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
               <button
                 type="button"
                 onClick={clearAll}
-                className="mt-6 h-11 rounded-xl bg-zinc-950 px-5 text-sm font-semibold text-white hover:bg-indigo-600"
+                className="btn btn-primary mt-6 h-11 px-5"
               >
                 Clear all filters
               </button>
             </div>
           ) : (
             <>
-              <ProductGrid products={visible} />
+              <ProductGrid key={filterKey} products={visible} />
               {visible.length < results.length && (
                 <div className="mt-8 flex flex-col items-center gap-2">
-                  <p className="text-sm text-zinc-500">
+                  <p className="text-sm text-fg-subtle">
                     Showing {visible.length} of {results.length}
                   </p>
                   <button
@@ -248,7 +268,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
                     onClick={() =>
                       setLimitState({ key: filterKey, limit: visibleLimit + PAGE_SIZE })
                     }
-                    className="h-12 rounded-xl border border-zinc-300 bg-white px-8 text-sm font-semibold text-zinc-800 hover:border-indigo-300 hover:text-indigo-600"
+                    className="btn btn-secondary h-12 px-8"
                   >
                     Load more
                   </button>

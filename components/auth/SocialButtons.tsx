@@ -23,7 +23,7 @@ export default function SocialButtons() {
         <button
           type="button"
           onClick={() => handleProviderClick("Google")}
-          className="group flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-400 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:translate-y-0"
+          className="group flex items-center justify-center gap-2 rounded-xl border border-line-strong bg-surface px-4 py-2.5 text-sm font-medium text-fg-muted shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:translate-y-0"
         >
           <svg
             viewBox="0 0 24 24"
@@ -52,7 +52,7 @@ export default function SocialButtons() {
         <button
           type="button"
           onClick={() => handleProviderClick("GitHub")}
-          className="group flex items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-400 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:translate-y-0"
+          className="group flex items-center justify-center gap-2 rounded-xl border border-line-strong bg-surface px-4 py-2.5 text-sm font-medium text-fg-muted shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:translate-y-0"
         >
           <svg
             viewBox="0 0 24 24"
@@ -66,7 +66,7 @@ export default function SocialButtons() {
         </button>
       </div>
       {notice && (
-        <p role="status" className="mt-3 animate-fade-in text-center text-xs text-zinc-500">
+        <p role="status" className="mt-3 animate-fade-in text-center text-xs text-fg-subtle">
           {notice}
         </p>
       )}

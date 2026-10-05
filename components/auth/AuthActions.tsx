@@ -8,26 +8,20 @@ export default function AuthActions({ stacked = false }: { stacked?: boolean }) 
   const { currentUser, isReady, logout } = useAuth();
   const router = useRouter();
 
+  const layout = stacked ? "flex flex-col gap-2" : "flex items-center gap-1 sm:gap-2";
+  const size = stacked ? "w-full" : "min-h-9 px-3.5";
+
   if (!isReady) {
-    return <div className="h-9 w-36 animate-pulse rounded-lg bg-zinc-200/70" aria-hidden="true" />;
+    return <div className="h-9 w-40 animate-pulse rounded-lg bg-surface-sunken" aria-hidden="true" />;
   }
 
   if (!currentUser) {
     return (
-      <nav
-        aria-label="Account"
-        className={stacked ? "flex flex-col gap-2" : "flex items-center gap-2 sm:gap-3"}
-      >
-        <Link
-          href="/auth/login"
-          className="rounded-lg px-3.5 py-2 text-sm font-medium text-zinc-700 transition-colors duration-300 hover:text-indigo-600"
-        >
+      <nav aria-label="Account" className={layout}>
+        <Link href="/auth/login" className={`btn btn-ghost ${size}`}>
           Log in
         </Link>
-        <Link
-          href="/auth/register"
-          className="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-indigo-600 hover:shadow-lg hover:shadow-indigo-600/30"
-        >
+        <Link href="/auth/register" className={`btn btn-primary ${size}`}>
           Create account
         </Link>
       </nav>
@@ -43,24 +37,14 @@ export default function AuthActions({ stacked = false }: { stacked?: boolean }) 
   }
 
   return (
-    <nav
-      aria-label="Account"
-      className={stacked ? "flex flex-col gap-2" : "flex items-center gap-2 sm:gap-4"}
-    >
-      <span className={stacked ? "text-sm text-zinc-600" : "hidden text-sm text-zinc-600 sm:inline"}>
-        Hi, <span className="font-semibold text-zinc-900">{currentUser.name}</span>
+    <nav aria-label="Account" className={layout}>
+      <span className={stacked ? "px-1 text-sm text-fg-muted" : "hidden text-sm text-fg-muted xl:inline"}>
+        Hi, <span className="font-semibold text-fg">{currentUser.name}</span>
       </span>
-      <Link
-        href={destination}
-        className="rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:text-indigo-600"
-      >
+      <Link href={destination} className={`btn btn-ghost ${size}`}>
         {destinationLabel}
       </Link>
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="rounded-lg border border-zinc-300 bg-white/80 px-3.5 py-2 text-sm font-semibold text-zinc-800 shadow-sm transition-colors hover:border-indigo-300 hover:text-indigo-600"
-      >
+      <button type="button" onClick={handleLogout} className={`btn btn-secondary ${size}`}>
         Log out
       </button>
     </nav>

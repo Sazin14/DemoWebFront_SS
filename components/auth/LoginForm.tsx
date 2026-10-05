@@ -76,8 +76,8 @@ export default function LoginForm() {
           role="alert"
           className={`mb-6 flex animate-fade-up items-start gap-2.5 rounded-xl border px-3.5 py-3 text-sm shadow-sm ${
             formMessage?.variant === "error" || initializationError
-              ? "border-red-200 bg-red-50 text-red-800"
-              : "border-indigo-200 bg-indigo-50/80 text-indigo-900"
+              ? "border-danger/30 bg-danger-soft text-danger-ink"
+              : "border-accent/30 bg-accent-soft/80 text-accent-ink"
           }`}
         >
           {formMessage?.variant === "error" || initializationError ? (
@@ -95,7 +95,7 @@ export default function LoginForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-zinc-900"
+            className="block text-sm font-medium text-fg"
           >
             Email address
           </label>
@@ -115,14 +115,14 @@ export default function LoginForm() {
             }}
             aria-invalid={fieldErrors.email ? true : undefined}
             aria-describedby={fieldErrors.email ? "email-error" : undefined}
-            className={`mt-1.5 block w-full rounded-xl border bg-white/80 px-3.5 py-2.5 text-sm text-zinc-900 shadow-sm transition-all duration-300 placeholder:text-zinc-400 hover:border-zinc-400 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 ${
+            className={`mt-1.5 block w-full rounded-xl border bg-surface/80 px-3.5 py-2.5 text-sm text-fg shadow-sm transition-all duration-300 placeholder:text-fg-subtle hover:border-line-strong focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 ${
               fieldErrors.email
-                ? "border-red-400 focus:border-red-500 focus:ring-red-500/15"
-                : "border-zinc-300 focus:border-indigo-500 focus:ring-indigo-500/15"
+                ? "border-danger focus:border-danger focus:ring-danger/15"
+                : "border-line-strong focus:border-accent focus:ring-accent/15"
             }`}
           />
           {fieldErrors.email && (
-            <p id="email-error" role="alert" className="mt-1.5 animate-shake text-sm text-red-600">
+            <p id="email-error" role="alert" className="mt-1.5 animate-shake text-sm text-danger-ink">
               {fieldErrors.email}
             </p>
           )}
@@ -131,7 +131,7 @@ export default function LoginForm() {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-zinc-900"
+            className="block text-sm font-medium text-fg"
           >
             Password
           </label>
@@ -164,7 +164,7 @@ export default function LoginForm() {
             <p
               id="password-error"
               role="alert"
-              className="mt-1.5 animate-shake text-sm text-red-600"
+              className="mt-1.5 animate-shake text-sm text-danger-ink"
             >
               {fieldErrors.password}
             </p>
@@ -172,16 +172,16 @@ export default function LoginForm() {
         </div>
 
         <div className="flex items-center justify-between gap-4">
-          <span className="text-xs text-zinc-500">Session saved on this browser</span>
+          <span className="text-xs text-fg-subtle">Session saved on this browser</span>
           <Link
             href="/auth/forgot-password"
-            className="relative text-sm font-medium text-zinc-900 transition-colors duration-300 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-indigo-600 after:transition-all after:duration-300 hover:text-indigo-600 hover:after:w-full"
+            className="relative text-sm font-medium text-fg transition-colors duration-300 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 hover:text-accent-ink hover:after:w-full"
           >
             Forgot password?
           </Link>
         </div>
 
-        <p className="mt-5 text-center text-xs leading-5 text-zinc-500">
+        <p className="mt-5 text-center text-xs leading-5 text-fg-subtle">
           Temporary browser-only sign-in. Do not use a real password; this is
           not production authentication.
         </p>
@@ -189,7 +189,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={!isReady || Boolean(initializationError) || isSubmitting}
-          className="group relative flex w-full animate-gradient-x items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_auto] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-600/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:-translate-y-0"
+          className="group relative flex w-full animate-gradient-x items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_auto] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-600/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:-translate-y-0"
         >
           <span
             aria-hidden="true"
@@ -210,7 +210,7 @@ export default function LoginForm() {
 
       <div className="my-6 flex items-center gap-3" aria-hidden="true">
         <span className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
-        <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+        <span className="text-xs font-medium uppercase tracking-wide text-fg-subtle">
           or continue with
         </span>
         <span className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
@@ -218,11 +218,11 @@ export default function LoginForm() {
 
       <SocialButtons />
 
-      <p className="mt-8 text-center text-sm text-zinc-600">
+      <p className="mt-8 text-center text-sm text-fg-muted">
         New to EcomMS?{" "}
         <Link
           href="/auth/register"
-          className="relative font-semibold text-indigo-600 transition-colors duration-300 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-indigo-500 after:transition-all after:duration-300 hover:text-indigo-500 hover:after:w-full"
+          className="relative font-semibold text-accent-ink transition-colors duration-300 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 hover:text-accent-ink hover:after:w-full"
         >
           Create an account
         </Link>

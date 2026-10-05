@@ -10,7 +10,7 @@ export default function Rating({ rating, reviewCount, className = "" }: RatingPr
   const rounded = Math.round(rating * 2) / 2;
   return (
     <div
-      className={`flex items-center gap-1.5 text-xs text-zinc-600 ${className}`}
+      className={`flex items-center gap-1.5 text-xs text-fg-muted ${className}`}
       aria-label={`Rated ${rating.toFixed(1)} out of 5${
         reviewCount !== undefined ? ` from ${reviewCount.toLocaleString("en-US")} sample reviews` : ""
       }`}
@@ -24,12 +24,12 @@ export default function Rating({ rating, reviewCount, className = "" }: RatingPr
                 ? "fill-amber-400 text-amber-400"
                 : rounded >= star - 0.5
                   ? "fill-amber-200 text-amber-400"
-                  : "fill-zinc-200 text-zinc-200"
+                  : "fill-line-strong text-fg-subtle"
             }`}
           />
         ))}
       </span>
-      <span aria-hidden="true" className="font-semibold text-zinc-800">
+      <span aria-hidden="true" className="font-semibold text-fg">
         {rating.toFixed(1)}
       </span>
       {reviewCount !== undefined && (

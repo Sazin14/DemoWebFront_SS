@@ -55,9 +55,9 @@ function AuthStatus({
   message: string;
 }) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-zinc-50 px-6">
-      <div className="flex max-w-lg items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-6 text-sm text-zinc-700 shadow-sm">
-        <span className="shrink-0 text-indigo-600">{icon}</span>
+    <main className="flex min-h-screen items-center justify-center bg-surface-muted px-6">
+      <div className="flex max-w-lg items-center gap-3 rounded-2xl border border-line bg-surface p-6 text-sm text-fg-muted shadow-sm">
+        <span className="shrink-0 text-accent-ink">{icon}</span>
         <p>{message}</p>
       </div>
     </main>

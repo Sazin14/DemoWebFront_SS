@@ -1,13 +1,105 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Components use the semantic utilities (bg-surface, text-fg,
+ * border-line, bg-accent ...) so light and dark themes are defined only here.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --canvas: #f8f8fa;
+  --surface: #ffffff;
+  --surface-muted: #f4f4f7;
+  --surface-sunken: #ececf1;
+  --line: #e4e4ea;
+  --line-strong: #cfd0da;
+
+  --fg: #17181c;
+  --fg-muted: #4b4e5a;
+  --fg-subtle: #6b6e7b;
+
+  --accent: #4f46e5;
+  --accent-strong: #4338ca;
+  --on-accent: #ffffff;
+  --accent-soft: #eef0ff;
+  --accent-ink: #4338ca;
+
+  --success: #059669;
+  --success-soft: #e8f8f1;
+  --success-ink: #047857;
+  --warn: #d97706;
+  --warn-soft: #fff6e5;
+  --warn-ink: #92400e;
+  --danger: #dc2626;
+  --danger-soft: #fdeded;
+  --danger-ink: #b91c1c;
+
+  --shadow-card: 0 1px 2px rgb(20 20 40 / 0.04), 0 8px 24px -12px rgb(20 20 40 / 0.14);
+  --shadow-pop: 0 12px 40px -8px rgb(20 20 40 / 0.28);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --canvas: #0e1014;
+  --surface: #161920;
+  --surface-muted: #1b1f27;
+  --surface-sunken: #232834;
+  --line: #2a303c;
+  --line-strong: #3b4352;
+
+  --fg: #eceef3;
+  --fg-muted: #a9afbd;
+  --fg-subtle: #8d94a4;
+
+  --accent: #5b5fee;
+  --accent-strong: #7276f5;
+  --on-accent: #ffffff;
+  --accent-soft: #232650;
+  --accent-ink: #a9b4fc;
+
+  --success: #34d399;
+  --success-soft: #11291f;
+  --success-ink: #6ee7b7;
+  --warn: #fbbf24;
+  --warn-soft: #2f2410;
+  --warn-ink: #fcd34d;
+  --danger: #f87171;
+  --danger-soft: #331718;
+  --danger-ink: #fca5a5;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 28px -14px rgb(0 0 0 / 0.6);
+  --shadow-pop: 0 16px 48px -8px rgb(0 0 0 / 0.7);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-ink: var(--success-ink);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-ink: var(--warn-ink);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-ink: var(--danger-ink);
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -20,7 +112,44 @@
   --animate-blob: blob 16s ease-in-out infinite;
   --animate-gradient-x: gradient-x 6s ease infinite;
   --animate-pulse-soft: pulse-soft 3s ease-in-out infinite;
+  --animate-pop: pop 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  --animate-reveal: reveal 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-toast-in: toast-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-toast-out: toast-out 0.2s ease-in both;
+  --animate-item-out: item-out 0.22s ease-in both;
+  --animate-swap: swap 0.28s ease-out both;
   --animate-shake: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes toast-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-6px); }
+  }
+
+  @keyframes item-out {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-16px); }
+  }
+
+  @keyframes swap {
+    from { opacity: 0; transform: scale(1.015); }
+    to { opacity: 1; transform: scale(1); }
+  }
 
   @keyframes fade-up {
     from {
@@ -108,21 +237,97 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--canvas);
+  color: var(--fg);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
 ::selection {
-  background: rgba(99, 102, 241, 0.22);
+  background: color-mix(in oklab, var(--accent) 28%, transparent);
+}
+
+/* Smooth theme switching; only applied for a moment while toggling. */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    fill 0.25s ease,
+    box-shadow 0.25s ease !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Shared drawer (native <dialog>) enter / exit motion. */
+dialog.drawer {
+  margin: 0 0 0 auto;
+  max-height: none;
+  height: 100dvh;
+  width: 100%;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+dialog.drawer[data-state="open"] {
+  animation: drawer-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+dialog.drawer[data-state="closing"] {
+  animation: drawer-out 0.2s ease-in both;
+}
+dialog.drawer::backdrop {
+  background: rgb(8 10 16 / 0.55);
+  backdrop-filter: blur(2px);
+}
+dialog.drawer[data-state="open"]::backdrop {
+  animation: fade-in 0.25s ease both;
+}
+dialog.drawer[data-state="closing"]::backdrop {
+  animation: backdrop-out 0.2s ease-in both;
+}
+
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes drawer-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+@keyframes backdrop-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-11 select-none items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold transition duration-200 ease-out active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-accent text-on-accent shadow-sm hover:bg-accent-strong;
+  }
+  .btn-secondary {
+    @apply border border-line-strong bg-surface text-fg hover:border-accent hover:text-accent-ink;
+  }
+  .btn-ghost {
+    @apply text-fg-muted hover:bg-surface-muted hover:text-fg;
+  }
+  .field {
+    @apply h-12 w-full rounded-xl border border-line-strong bg-surface px-3 text-base text-fg outline-none transition placeholder:text-fg-subtle focus:border-accent focus:ring-2 focus:ring-accent/30 sm:text-sm;
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-surface;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -131,6 +336,7 @@ body {
   ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }

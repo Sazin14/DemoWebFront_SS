@@ -37,22 +37,22 @@ export default async function ProductPage({ params }: PageProps<"/products/[id]"
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-      <nav aria-label="Breadcrumb" className="mb-5 text-sm text-zinc-500">
+      <nav aria-label="Breadcrumb" className="mb-5 text-sm text-fg-subtle">
         <ol className="flex flex-wrap items-center gap-1.5">
-          <li><Link href="/" className="hover:text-indigo-600">Home</Link></li>
+          <li><Link href="/" className="hover:text-accent-ink">Home</Link></li>
           <ChevronRight className="size-3.5" aria-hidden="true" />
-          <li><Link href="/products" className="hover:text-indigo-600">Products</Link></li>
+          <li><Link href="/products" className="hover:text-accent-ink">Products</Link></li>
           <ChevronRight className="size-3.5" aria-hidden="true" />
           <li>
             <Link
               href={`/products?category=${encodeURIComponent(product.category)}`}
-              className="hover:text-indigo-600"
+              className="hover:text-accent-ink"
             >
               {product.category}
             </Link>
           </li>
           <ChevronRight className="size-3.5" aria-hidden="true" />
-          <li aria-current="page" className="max-w-[16rem] truncate font-medium text-zinc-800">
+          <li aria-current="page" className="max-w-[16rem] truncate font-medium text-fg">
             {product.name}
           </li>
         </ol>

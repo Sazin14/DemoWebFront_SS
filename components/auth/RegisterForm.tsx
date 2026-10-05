@@ -28,13 +28,13 @@ const FIELD_IDS: Record<FieldName, string> = {
 };
 
 const STRENGTH_BAR = ["", "bg-red-500", "bg-amber-500", "bg-lime-500", "bg-emerald-500"];
-const STRENGTH_TEXT = ["", "text-red-700", "text-amber-700", "text-lime-700", "text-emerald-700"];
+const STRENGTH_TEXT = ["", "text-danger-ink", "text-warn-ink", "text-lime-700", "text-success-ink"];
 
 const inputClasses = (hasError: boolean) =>
-  `mt-1.5 block w-full rounded-xl border bg-white/80 px-3.5 py-2.5 text-base text-zinc-900 shadow-sm transition-all duration-300 placeholder:text-zinc-400 hover:border-zinc-400 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm ${
+  `mt-1.5 block w-full rounded-xl border bg-surface/80 px-3.5 py-2.5 text-base text-fg shadow-sm transition-all duration-300 placeholder:text-fg-subtle hover:border-line-strong focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm ${
     hasError
-      ? "border-red-400 focus:border-red-500 focus:ring-red-500/15"
-      : "border-zinc-300 focus:border-indigo-500 focus:ring-indigo-500/15"
+      ? "border-danger focus:border-danger focus:ring-danger/15"
+      : "border-line-strong focus:border-accent focus:ring-accent/15"
   }`;
 
 function validateAll(values: Record<FieldName, string>): FieldErrors {
@@ -52,7 +52,7 @@ function validateAll(values: Record<FieldName, string>): FieldErrors {
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
   return (
-    <p id={id} role="alert" className="mt-1.5 animate-shake text-sm text-red-600">
+    <p id={id} role="alert" className="mt-1.5 animate-shake text-sm text-danger-ink">
       {message}
     </p>
   );
@@ -136,24 +136,24 @@ export default function RegisterForm() {
     return (
       <div
         role="status"
-        className="animate-fade-up rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-indigo-50/60 px-6 py-10 text-center shadow-sm"
+        className="animate-fade-up rounded-2xl border border-emerald-200 bg-gradient-to-br from-success-soft via-white to-indigo-50/60 px-6 py-10 text-center shadow-sm"
       >
-        <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+        <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-emerald-100 text-success-ink">
           <CheckCircle2 className="size-7" aria-hidden="true" />
         </span>
-        <h2 className="mt-5 text-xl font-semibold tracking-tight text-zinc-950">
+        <h2 className="mt-5 text-xl font-semibold tracking-tight text-fg">
           Welcome to EcomMS, {createdName.split(" ")[0]}!
         </h2>
-        <p className="mt-2 text-sm text-zinc-600">
+        <p className="mt-2 text-sm text-fg-muted">
           Your account is ready. Taking you to your account…
         </p>
         <Loader2
-          className="mx-auto mt-5 size-5 animate-spin text-indigo-600"
+          className="mx-auto mt-5 size-5 animate-spin text-accent-ink"
           aria-hidden="true"
         />
         <Link
           href="/account"
-          className="mt-4 inline-block text-sm font-semibold text-indigo-600 hover:text-indigo-500"
+          className="mt-4 inline-block text-sm font-semibold text-accent-ink hover:text-accent-ink"
         >
           Go to my account now
         </Link>
@@ -168,7 +168,7 @@ export default function RegisterForm() {
       {bannerMessage && (
         <div
           role="alert"
-          className="mb-5 flex animate-fade-up items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-3 text-sm text-red-800 shadow-sm"
+          className="mb-5 flex animate-fade-up items-start gap-2.5 rounded-xl border border-danger/30 bg-danger-soft px-3.5 py-3 text-sm text-danger-ink shadow-sm"
         >
           <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           <p className="leading-5">{bannerMessage}</p>
@@ -177,7 +177,7 @@ export default function RegisterForm() {
 
       <div className="space-y-5">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-zinc-900">
+          <label htmlFor="name" className="block text-sm font-medium text-fg">
             Full name
           </label>
           <input
@@ -198,7 +198,7 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-zinc-900">
+          <label htmlFor="email" className="block text-sm font-medium text-fg">
             Email address
           </label>
           <input
@@ -229,12 +229,12 @@ export default function RegisterForm() {
             <p
               id="email-duplicate"
               role="alert"
-              className="mt-1.5 animate-shake text-sm text-red-600"
+              className="mt-1.5 animate-shake text-sm text-danger-ink"
             >
               {duplicateEmail}{" "}
               <Link
                 href="/auth/login"
-                className="font-semibold text-indigo-600 underline underline-offset-2 hover:text-indigo-500"
+                className="font-semibold text-accent-ink underline underline-offset-2 hover:text-accent-ink"
               >
                 Log in instead
               </Link>
@@ -243,7 +243,7 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-zinc-900">
+          <label htmlFor="password" className="block text-sm font-medium text-fg">
             Password
           </label>
           <div className="mt-1.5">
@@ -277,7 +277,7 @@ export default function RegisterForm() {
                     className={`h-1.5 rounded-full transition-colors duration-300 ${
                       segment <= strength.score
                         ? STRENGTH_BAR[strength.score]
-                        : "bg-zinc-200"
+                        : "bg-line"
                     }`}
                   />
                 ))}
@@ -295,7 +295,7 @@ export default function RegisterForm() {
             </p>
             <p
               className={`flex items-center gap-1.5 text-xs ${
-                hasMinLength ? "text-emerald-700" : "text-zinc-500"
+                hasMinLength ? "text-success-ink" : "text-fg-subtle"
               }`}
             >
               <Check
@@ -307,7 +307,7 @@ export default function RegisterForm() {
                 {hasMinLength ? " (met)" : " (not yet met)"}
               </span>
             </p>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-fg-subtle">
               The strength bar is only a rough guide. Longer passwords that mix
               letters, numbers, and symbols are better.
             </p>
@@ -317,7 +317,7 @@ export default function RegisterForm() {
         <div>
           <label
             htmlFor="confirm-password"
-            className="block text-sm font-medium text-zinc-900"
+            className="block text-sm font-medium text-fg"
           >
             Confirm password
           </label>
@@ -350,7 +350,7 @@ export default function RegisterForm() {
         <button
           type="submit"
           disabled={isDisabled}
-          className="group relative flex w-full animate-gradient-x items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_auto] px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-600/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+          className="group relative flex w-full animate-gradient-x items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_auto] px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-indigo-600/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
         >
           <span
             aria-hidden="true"

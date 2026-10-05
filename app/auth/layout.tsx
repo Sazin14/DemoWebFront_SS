@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 import {
   CreditCard,
   ShieldCheck,
@@ -37,7 +38,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid min-h-screen bg-white text-zinc-900 lg:grid-cols-2">
+    <div className="grid min-h-screen bg-surface text-fg lg:grid-cols-2">
       {/* Brand panel — desktop only */}
       <aside className="relative hidden flex-col justify-between overflow-hidden bg-zinc-950 p-12 text-white lg:flex xl:p-16">
         {/* Animated aurora backdrop */}
@@ -70,7 +71,7 @@ export default function AuthLayout({
               className="size-3.5 animate-pulse-soft text-fuchsia-300"
               aria-hidden="true"
             />
-            New season drops are live
+            Demo storefront preview
           </div>
 
           <h2 className="mt-6 animate-fade-up text-3xl font-semibold leading-tight tracking-tight [animation-delay:220ms] xl:text-4xl">
@@ -114,27 +115,27 @@ export default function AuthLayout({
               className="size-3.5 fill-amber-400 text-amber-400"
               aria-hidden="true"
             />
-            4.9 &middot; 12k+ reviews
+            Demo storefront &middot; sample data
           </p>
         </div>
       </aside>
 
       {/* Form column */}
-      <main className="relative flex flex-col overflow-hidden bg-gradient-to-b from-white via-indigo-50/50 to-white">
+      <main className="relative flex flex-col overflow-hidden bg-gradient-to-b from-surface via-accent-soft/50 to-surface">
         {/* Soft drifting blobs */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
         >
-          <div className="absolute -top-24 right-0 size-72 animate-float-slow rounded-full bg-indigo-200/40 blur-3xl" />
-          <div className="absolute -left-16 bottom-0 size-72 animate-float rounded-full bg-fuchsia-200/40 blur-3xl" />
+          <div className="absolute -top-24 right-0 size-72 animate-float-slow rounded-full bg-indigo-200/40 blur-3xl dark:opacity-20" />
+          <div className="absolute -left-16 bottom-0 size-72 animate-float rounded-full bg-fuchsia-200/40 blur-3xl dark:opacity-20" />
         </div>
 
         {/* Compact brand header — mobile/tablet only */}
-        <div className="relative border-b border-zinc-100/80 bg-white/70 px-4 py-4 backdrop-blur sm:px-8 lg:hidden">
+        <div className="relative border-b border-line bg-surface/70 py-4 pl-4 pr-16 backdrop-blur sm:px-8 lg:hidden">
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600"
+            className="group inline-flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
           >
             <span className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-500 text-white shadow-md shadow-indigo-500/30 transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110">
               <ShoppingBag className="size-4" aria-hidden="true" />
@@ -143,6 +144,10 @@ export default function AuthLayout({
               EcomMS
             </span>
           </Link>
+        </div>
+
+        <div className="absolute right-3 top-3 z-10 sm:right-6 lg:top-5">
+          <ThemeToggle />
         </div>
 
         <div className="relative flex flex-1 items-center justify-center px-4 py-10 sm:px-8">

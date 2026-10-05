@@ -20,7 +20,7 @@ export default function ProductGallery({
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="relative aspect-square touch-pan-y overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100"
+        className="relative aspect-square touch-pan-y overflow-hidden rounded-2xl border border-line bg-surface-sunken"
         onTouchStart={(event) => {
           touchStart.current = event.touches[0].clientX;
         }}
@@ -37,6 +37,7 @@ export default function ProductGallery({
           alt={`${name} — image ${index + 1} of ${count}`}
           priority
           sizes="(min-width: 1024px) 50vw, 100vw"
+          className="animate-swap"
         />
         {count > 1 && (
           <>
@@ -44,7 +45,7 @@ export default function ProductGallery({
               type="button"
               onClick={() => go(index - 1)}
               aria-label="Previous image"
-              className="absolute left-2 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-zinc-800 shadow hover:bg-white"
+              className="absolute left-2 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-surface/90 text-fg shadow hover:bg-surface"
             >
               <ChevronLeft className="size-5" aria-hidden="true" />
             </button>
@@ -52,7 +53,7 @@ export default function ProductGallery({
               type="button"
               onClick={() => go(index + 1)}
               aria-label="Next image"
-              className="absolute right-2 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-zinc-800 shadow hover:bg-white"
+              className="absolute right-2 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-surface/90 text-fg shadow hover:bg-surface"
             >
               <ChevronRight className="size-5" aria-hidden="true" />
             </button>
@@ -71,7 +72,7 @@ export default function ProductGallery({
                 aria-current={thumbIndex === index}
                 className={`relative block size-16 overflow-hidden rounded-xl border-2 sm:size-20 ${
                   thumbIndex === index
-                    ? "border-indigo-600"
+                    ? "border-accent"
                     : "border-transparent opacity-70 hover:opacity-100"
                 }`}
               >

@@ -27,7 +27,7 @@ export default function ProductImage({
       <div
         role="img"
         aria-label={alt}
-        className={`flex size-full flex-col items-center justify-center gap-2 bg-zinc-100 text-zinc-400 ${className}`}
+        className={`flex size-full flex-col items-center justify-center gap-2 bg-surface-sunken text-fg-subtle ${className}`}
       >
         <ImageOff className="size-8" aria-hidden="true" />
         <span className="text-xs">Image unavailable</span>

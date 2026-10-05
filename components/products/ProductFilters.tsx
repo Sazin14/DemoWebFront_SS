@@ -17,8 +17,8 @@ interface ProductFiltersProps {
 
 function Group({ legend, children }: { legend: string; children: ReactNode }) {
   return (
-    <fieldset className="min-w-0 border-t border-zinc-200 pt-5 first:border-0 first:pt-0">
-      <legend className="mb-3 text-sm font-semibold text-zinc-900">{legend}</legend>
+    <fieldset className="min-w-0 border-t border-line pt-5 first:border-0 first:pt-0">
+      <legend className="mb-3 text-sm font-semibold text-fg">{legend}</legend>
       <div className="space-y-1">{children}</div>
     </fieldset>
   );
@@ -42,7 +42,7 @@ function Option({
   return (
     <label
       htmlFor={id}
-      className="flex min-h-10 cursor-pointer items-center gap-3 rounded-lg px-2 text-sm text-zinc-700 hover:bg-zinc-50"
+      className="flex min-h-10 cursor-pointer items-center gap-3 rounded-lg px-2 text-sm text-fg-muted hover:bg-surface-muted"
     >
       <input
         id={id}
@@ -50,7 +50,7 @@ function Option({
         name={name}
         checked={checked}
         onChange={onChange}
-        className="size-4 accent-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        className="size-4 accent-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       />
       {children}
     </label>

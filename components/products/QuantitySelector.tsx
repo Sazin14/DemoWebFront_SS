@@ -23,13 +23,13 @@ export default function QuantitySelector({
   const clamp = (next: number) => onChange(Math.min(max, Math.max(min, next)));
 
   return (
-    <div role="group" aria-label={label} className="inline-flex items-center rounded-xl border border-zinc-300 bg-white">
+    <div role="group" aria-label={label} className="inline-flex items-center rounded-xl border border-line-strong bg-surface">
       <button
         type="button"
         onClick={() => clamp(value - 1)}
         disabled={value <= min}
         aria-label="Decrease quantity"
-        className={`${size} inline-flex items-center justify-center rounded-l-xl text-zinc-700 hover:bg-zinc-100 disabled:text-zinc-300 disabled:hover:bg-transparent`}
+        className={`${size} inline-flex items-center justify-center rounded-l-xl text-fg-muted hover:bg-surface-sunken disabled:text-fg-subtle disabled:hover:bg-transparent`}
       >
         <Minus className="size-4" aria-hidden="true" />
       </button>
@@ -43,14 +43,14 @@ export default function QuantitySelector({
           const parsed = parseInt(event.target.value.replace(/\D/g, ""), 10);
           if (Number.isFinite(parsed)) clamp(parsed);
         }}
-        className={`${compact ? "h-9 w-10" : "h-11 w-12"} border-x border-zinc-300 bg-transparent text-center text-base font-semibold text-zinc-900 focus:outline-none focus-visible:bg-indigo-50 sm:text-sm`}
+        className={`${compact ? "h-9 w-10" : "h-11 w-12"} border-x border-line-strong bg-transparent text-center text-base font-semibold text-fg focus:outline-none focus-visible:bg-accent-soft sm:text-sm`}
       />
       <button
         type="button"
         onClick={() => clamp(value + 1)}
         disabled={value >= max}
         aria-label="Increase quantity"
-        className={`${size} inline-flex items-center justify-center rounded-r-xl text-zinc-700 hover:bg-zinc-100 disabled:text-zinc-300 disabled:hover:bg-transparent`}
+        className={`${size} inline-flex items-center justify-center rounded-r-xl text-fg-muted hover:bg-surface-sunken disabled:text-fg-subtle disabled:hover:bg-transparent`}
       >
         <Plus className="size-4" aria-hidden="true" />
       </button>
