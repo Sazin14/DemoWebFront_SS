@@ -12,18 +12,18 @@ import {
 const highlights = [
   {
     icon: Truck,
-    title: "Fast, tracked delivery",
-    description: "Free shipping over $50 with real-time order tracking.",
+    title: "Delivery flow preview",
+    description: "Explore clear sample delivery choices during checkout.",
   },
   {
     icon: ShieldCheck,
-    title: "Buyer protection",
-    description: "Every purchase is covered by our secure payment guarantee.",
+    title: "Transparent demo data",
+    description: "Products, prices and account details are examples, not live service data.",
   },
   {
     icon: CreditCard,
-    title: "Flexible payments",
-    description: "Cards, wallets, and pay-over-time options at checkout.",
+    title: "Payment choices only",
+    description: "Checkout labels are for demonstration; no payment is collected.",
   },
 ];
 
@@ -75,14 +75,13 @@ export default function AuthLayout({
           </div>
 
           <h2 className="mt-6 animate-fade-up text-3xl font-semibold leading-tight tracking-tight [animation-delay:220ms] xl:text-4xl">
-            Everything you love,{" "}
+            See your storefront{" "}
             <span className="bg-gradient-to-r from-indigo-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent">
-              delivered.
+              come together.
             </span>
           </h2>
           <p className="mt-4 animate-fade-up text-base leading-7 text-zinc-400 [animation-delay:320ms]">
-            Shop thousands of products from trusted sellers with secure
-            checkout and delivery you can follow door to door.
+            Explore category-aware product discovery, variants, a local demo cart and customer order journeys.
           </p>
 
           <ul className="mt-10 space-y-4">

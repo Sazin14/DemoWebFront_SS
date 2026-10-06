@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Furniture collection illustration">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c69a75"/><stop offset="1" stop-color="#725b56"/></linearGradient></defs>
+  <rect width="600" height="600" fill="url(#g)"/><circle cx="472" cy="122" r="105" fill="#fff" opacity=".12"/>
+  <rect x="121" y="286" width="358" height="126" rx="30" fill="#e7d8bf"/><rect x="147" y="236" width="145" height="101" rx="28" fill="#f0e6d4"/><rect x="308" y="236" width="145" height="101" rx="28" fill="#f0e6d4"/>
+  <path d="M154 408v50m292-50v50" stroke="#3e3938" stroke-width="18" stroke-linecap="round"/><path d="M101 322h31m336 0h31" stroke="#f0e6d4" stroke-width="18" stroke-linecap="round"/>
+  <path d="M110 468h380" stroke="#f6ead6" stroke-width="5" opacity=".45"/>
+  <text x="300" y="530" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="4" fill="#fff" opacity=".85">MAKE ROOM FOR LIVING</text>
+</svg>

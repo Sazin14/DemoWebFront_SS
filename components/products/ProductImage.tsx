@@ -8,7 +8,7 @@ interface ProductImageProps {
   src: string;
   alt: string;
   sizes: string;
-  priority?: boolean;
+  loading?: "eager" | "lazy";
   className?: string;
 }
 
@@ -17,7 +17,7 @@ export default function ProductImage({
   src,
   alt,
   sizes,
-  priority,
+  loading = "lazy",
   className = "",
 }: ProductImageProps) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
@@ -41,7 +41,7 @@ export default function ProductImage({
       alt={alt}
       fill
       sizes={sizes}
-      priority={priority}
+      loading={loading}
       unoptimized={src.endsWith(".svg")}
       onError={() => setFailedSrc(src)}
       className={`object-cover ${className}`}

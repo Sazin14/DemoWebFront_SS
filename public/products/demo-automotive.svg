@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Automotive essentials illustration">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#526c79"/><stop offset="1" stop-color="#1e3547"/></linearGradient></defs>
+  <rect width="600" height="600" fill="url(#g)"/><circle cx="476" cy="150" r="118" fill="#fff" opacity=".08"/>
+  <path d="M110 332 147 256q12-25 41-25h218q26 0 41 24l43 77 24 16q12 8 12 23v50q0 15-15 15h-31a48 48 0 0 1-94 0H228a48 48 0 0 1-94 0h-30q-16 0-16-16v-48q0-19 22-29Z" fill="#edf0eb"/>
+  <path d="m179 260-29 69h275l-38-67q-7-12-23-12H201q-14 0-22 10Z" fill="#7ba0a8"/><circle cx="181" cy="418" r="32" fill="#22313a"/><circle cx="433" cy="418" r="32" fill="#22313a"/>
+  <path d="M95 365h40m349 0h28" stroke="#e7b765" stroke-width="14" stroke-linecap="round"/>
+  <text x="300" y="525" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="4" fill="#fff" opacity=".82">READY FOR THE ROAD</text>
+</svg>

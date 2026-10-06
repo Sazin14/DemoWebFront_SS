@@ -66,11 +66,48 @@ export function getSelectionError(
     if (!value) return `Select a ${group.name.toLowerCase()} to continue.`;
 
     const option = group.options.find((candidate) => candidate.value === value);
-    if (!option || option.available === false) {
+    if (!option || option.available === false || option.stock === 0) {
       return `The selected ${group.name.toLowerCase()} is not available.`;
     }
   }
   return null;
+}
+
+export function getSelectedStock(
+  product: Product,
+  selection: VariantSelection = {},
+): number {
+  return (product.variants ?? []).reduce((stock, group) => {
+    const option = group.options.find((candidate) => candidate.value === selection[group.name]);
+    if (!option) return stock;
+    if (option.available === false) return 0;
+    return Math.min(stock, option.stock ?? stock);
+  }, product.stock);
+}
+
+export function getSelectedSku(
+  product: Product,
+  selection: VariantSelection = {},
+): string {
+  const selectedSkus = (product.variants ?? [])
+    .map((group) => group.options.find((option) => option.value === selection[group.name])?.sku)
+    .filter((sku): sku is string => Boolean(sku));
+  if (selectedSkus.length > 0) return selectedSkus.at(-1) ?? product.sku;
+  const selectedValues = Object.values(selection);
+  return selectedValues.length > 0
+    ? `${product.sku}-${selectedValues.join("-").toUpperCase().replace(/\s+/g, "-")}`
+    : product.sku;
+}
+
+export function getSelectedImage(
+  product: Product,
+  selection: VariantSelection = {},
+): string | undefined {
+  for (const group of product.variants ?? []) {
+    const image = group.options.find((option) => option.value === selection[group.name])?.image;
+    if (image) return image;
+  }
+  return undefined;
 }
 
 export function getPriceFrom(product: Product): number {

@@ -7,6 +7,7 @@ import ProductGrid from "@/components/products/ProductGrid";
 import {
   getProductBySlug,
   getProducts,
+  getProductReviews,
   getRelatedProducts,
 } from "@/lib/products/product-service";
 
@@ -33,7 +34,10 @@ export default async function ProductPage({ params }: PageProps<"/products/[id]"
   const product = await getProductBySlug(id);
   if (!product) notFound();
 
-  const related = await getRelatedProducts(product);
+  const [related, reviews] = await Promise.all([
+    getRelatedProducts(product),
+    getProductReviews(product.id),
+  ]);
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
@@ -58,7 +62,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[id]"
         </ol>
       </nav>
 
-      <ProductDetail product={product} />
+      <ProductDetail product={product} reviews={reviews} />
 
       {related.length > 0 && (
         <section aria-labelledby="related-heading" className="mt-14">

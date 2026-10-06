@@ -1,4 +1,5 @@
-import type { Product } from "./types";
+import { categorySlug } from "./categories";
+import type { Product, ProductAttributeValue } from "./types";
 import { getStockStatus } from "./product-utils";
 
 export const SORT_OPTIONS = [
@@ -26,6 +27,7 @@ export const RATING_OPTIONS = [4, 3] as const;
 export interface CatalogFilters {
   query: string;
   category: string;
+  attributes: Record<string, string[]>;
   price: PriceRangeId | "";
   minRating: number;
   inStockOnly: boolean;
@@ -35,22 +37,37 @@ export interface CatalogFilters {
 export const DEFAULT_FILTERS: CatalogFilters = {
   query: "",
   category: "",
+  attributes: {},
   price: "",
   minRating: 0,
   inStockOnly: false,
   sort: "featured",
 };
 
-type ParamSource = { get(name: string): string | null };
+type ParamSource = {
+  get(name: string): string | null;
+  forEach?: (callback: (value: string, key: string) => void) => void;
+};
 
-export function parseFilters(params: ParamSource): CatalogFilters {
+export function parseFilters(
+  params: ParamSource,
+  defaultCategory = "",
+): CatalogFilters {
   const sort = params.get("sort");
   const price = params.get("price");
   const rating = Number(params.get("rating"));
+  const attributes: Record<string, string[]> = {};
+  params.forEach?.((value, key) => {
+    if (!key.startsWith("attr.")) return;
+    const id = key.slice(5);
+    attributes[id] ??= [];
+    if (!attributes[id].includes(value)) attributes[id].push(value);
+  });
 
   return {
     query: (params.get("q") ?? "").trim(),
-    category: params.get("category") ?? "",
+    category: categorySlug(params.get("category") ?? defaultCategory),
+    attributes,
     price: PRICE_RANGES.some((range) => range.id === price)
       ? (price as PriceRangeId)
       : "",
@@ -66,6 +83,9 @@ export function serializeFilters(filters: CatalogFilters): string {
   const params = new URLSearchParams();
   if (filters.query.trim()) params.set("q", filters.query.trim());
   if (filters.category) params.set("category", filters.category);
+  for (const [id, values] of Object.entries(filters.attributes).sort(([a], [b]) => a.localeCompare(b))) {
+    for (const value of [...values].sort()) params.append(`attr.${id}`, value);
+  }
   if (filters.price) params.set("price", filters.price);
   if (filters.minRating) params.set("rating", String(filters.minRating));
   if (filters.inStockOnly) params.set("stock", "1");
@@ -76,6 +96,7 @@ export function serializeFilters(filters: CatalogFilters): string {
 export function countActiveFilters(filters: CatalogFilters): number {
   return (
     (filters.category ? 1 : 0) +
+    Object.values(filters.attributes).reduce((count, values) => count + (values.length > 0 ? 1 : 0), 0) +
     (filters.price ? 1 : 0) +
     (filters.minRating ? 1 : 0) +
     (filters.inStockOnly ? 1 : 0)
@@ -89,7 +110,10 @@ export function hasActiveCriteria(filters: CatalogFilters): boolean {
 function matchesQuery(product: Product, query: string): boolean {
   const tokens = query.toLowerCase().split(/\s+/).filter(Boolean);
   if (tokens.length === 0) return true;
-  const haystack = [product.name, product.brand, product.category, ...product.tags]
+  const attributeText = Object.values(product.attributes).flatMap((value) =>
+    Array.isArray(value) ? value : String(value),
+  );
+  const haystack = [product.name, product.brand, product.category, ...product.tags, ...attributeText]
     .join(" ")
     .toLowerCase();
   return tokens.every((token) => haystack.includes(token));
@@ -103,7 +127,13 @@ export function applyFilters(
 
   const filtered = products.filter((product) => {
     if (!matchesQuery(product, filters.query)) return false;
-    if (filters.category && product.category !== filters.category) return false;
+    if (filters.category && product.categoryId !== filters.category) return false;
+    for (const [attributeId, selected] of Object.entries(filters.attributes)) {
+      if (selected.length === 0) continue;
+      const value: ProductAttributeValue | undefined = product.attributes[attributeId];
+      const values = Array.isArray(value) ? value.map(String) : value === undefined ? [] : [String(value)];
+      if (!selected.some((option) => values.includes(option))) return false;
+    }
     if (range && (product.price < range.min || product.price >= range.max))
       return false;
     if (filters.minRating && product.rating < filters.minRating) return false;

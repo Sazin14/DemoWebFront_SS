@@ -14,23 +14,32 @@ import {
   DEFAULT_FILTERS,
   type CatalogFilters,
 } from "@/lib/products/catalog";
-import type { Product } from "@/lib/products/types";
+import type { Product, ProductCategory } from "@/lib/products/types";
 import FilterDrawer from "./FilterDrawer";
 import ProductFilters from "./ProductFilters";
 import DemoBadge from "@/components/feedback/DemoBadge";
 import ProductCard from "./ProductCard";
 import ProductGrid from "./ProductGrid";
+import ProductImage from "./ProductImage";
 
 const PAGE_SIZE = 12;
 
 interface ProductCatalogProps {
   products: Product[];
-  categories: string[];
+  categories: ProductCategory[];
+  initialCategory?: string;
 }
 
-export default function ProductCatalog({ products, categories }: ProductCatalogProps) {
+export default function ProductCatalog({
+  products,
+  categories,
+  initialCategory = "",
+}: ProductCatalogProps) {
   const searchParams = useSearchParams();
-  const filters = useMemo(() => parseFilters(searchParams), [searchParams]);
+  const filters = useMemo(
+    () => parseFilters(searchParams, initialCategory),
+    [searchParams, initialCategory],
+  );
 
   const [searchText, setSearchText] = useState(filters.query);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -56,7 +65,10 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
 
   const update = useCallback(
     (patch: Partial<CatalogFilters>) => {
-      const next = { ...parseFilters(new URLSearchParams(window.location.search)), ...patch };
+      const next = {
+        ...parseFilters(new URLSearchParams(window.location.search), initialCategory),
+        ...patch,
+      };
       const query = serializeFilters(next);
       window.history.replaceState(
         null,
@@ -64,7 +76,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
         query ? `${window.location.pathname}?${query}` : window.location.pathname,
       );
     },
-    [],
+    [initialCategory],
   );
 
   function handleSearchChange(value: string) {
@@ -91,9 +103,10 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
   const activeCount = countActiveFilters(filters);
   const criteria = hasActiveCriteria(filters);
   const searchActive = filters.query !== "";
+  const category = categories.find((item) => item.id === filters.category);
 
   const chips: { label: string; remove: () => void }[] = [];
-  if (filters.category) chips.push({ label: filters.category, remove: () => update({ category: "" }) });
+  if (filters.category) chips.push({ label: category?.name ?? filters.category, remove: () => update({ category: "", attributes: {} }) });
   if (filters.price)
     chips.push({
       label: ({ "under-50": "Under $50", "50-100": "$50 – $100", "100-500": "$100 – $500", "500-plus": "$500+" })[filters.price],
@@ -102,6 +115,21 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
   if (filters.minRating)
     chips.push({ label: `${filters.minRating}★ & up`, remove: () => update({ minRating: 0 }) });
   if (filters.inStockOnly) chips.push({ label: "In stock", remove: () => update({ inStockOnly: false }) });
+  for (const [attributeId, values] of Object.entries(filters.attributes)) {
+    const attributeName = category?.attributes.find((attribute) => attribute.id === attributeId)?.name ?? attributeId;
+    for (const value of values) {
+      chips.push({
+        label: `${attributeName}: ${value}`,
+        remove: () => {
+          const next = values.filter((selected) => selected !== value);
+          const attributes = { ...filters.attributes };
+          if (next.length > 0) attributes[attributeId] = next;
+          else delete attributes[attributeId];
+          update({ attributes });
+        },
+      });
+    }
+  }
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
@@ -118,13 +146,26 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
       <div className="flex flex-col gap-1">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            {searchActive ? `Results for “${filters.query}”` : "All products"}
+            {searchActive
+              ? `Results for “${filters.query}”`
+              : category?.name ?? "All products"}
           </h1>
           <DemoBadge label="Demo data" />
         </div>
         <p className="text-sm text-fg-muted" role="status" aria-live="polite">
           {results.length} {results.length === 1 ? "product" : "products"}
         </p>
+        {category && (
+          <div className="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-line bg-surface p-3 sm:p-4">
+            <div className="max-w-2xl">
+              <p className="text-sm leading-6 text-fg-muted">{category.description}</p>
+              <p className="mt-2 text-xs font-medium text-accent-ink">Category-specific filters are active for {category.name}.</p>
+            </div>
+            <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-surface-sunken sm:size-24">
+              <ProductImage src={category.image} alt="" sizes="96px" />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -213,7 +254,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
                 </button>
               )}
             </div>
-            <ProductFilters idPrefix="desktop" filters={filters} categories={categories} onChange={update} />
+            <ProductFilters idPrefix="desktop" filters={filters} categories={categories} products={products} onChange={update} />
           </div>
         </aside>
 
@@ -285,7 +326,7 @@ export default function ProductCatalog({ products, categories }: ProductCatalogP
         onClear={clearAll}
         resultCount={results.length}
       >
-        <ProductFilters idPrefix="drawer" filters={filters} categories={categories} onChange={update} />
+        <ProductFilters idPrefix="drawer" filters={filters} categories={categories} products={products} onChange={update} />
       </FilterDrawer>
     </div>
   );

@@ -1,5 +1,7 @@
 import { mockProducts } from "./mock-data";
-import type { Product, ProductCategory } from "./types";
+import { PRODUCT_CATEGORIES } from "./categories";
+import type { CategoryAttribute, Product, ProductCategory } from "./types";
+import { getDemoReviews, type ProductReview } from "./reviews";
 
 /**
  * Product data access boundary.
@@ -21,7 +23,26 @@ export async function getProductById(id: string): Promise<Product | null> {
 }
 
 export async function getCategories(): Promise<ProductCategory[]> {
-  return Array.from(new Set(mockProducts.map((product) => product.category)));
+  return PRODUCT_CATEGORIES;
+}
+
+export async function getCategory(idOrSlug: string): Promise<ProductCategory | null> {
+  return PRODUCT_CATEGORIES.find(
+    (category) => category.id === idOrSlug || category.slug === idOrSlug,
+  ) ?? null;
+}
+
+export async function getProductsByCategory(categoryId: string): Promise<Product[]> {
+  return mockProducts.filter((product) => product.categoryId === categoryId);
+}
+
+export async function getProductFilters(categoryId: string): Promise<CategoryAttribute[]> {
+  const category = await getCategory(categoryId);
+  return category?.attributes.filter((attribute) => attribute.filterable) ?? [];
+}
+
+export async function getProductReviews(productId: string): Promise<ProductReview[]> {
+  return getDemoReviews(productId);
 }
 
 export async function getRelatedProducts(

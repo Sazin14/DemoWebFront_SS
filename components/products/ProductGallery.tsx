@@ -35,7 +35,7 @@ export default function ProductGallery({
           key={images[index]}
           src={images[index]}
           alt={`${name} — image ${index + 1} of ${count}`}
-          priority
+          loading="eager"
           sizes="(min-width: 1024px) 50vw, 100vw"
           className="animate-swap"
         />
