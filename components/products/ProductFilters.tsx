@@ -7,11 +7,13 @@ import {
   RATING_OPTIONS,
   type CatalogFilters,
 } from "@/lib/products/catalog";
+import type { Product, ProductCategory } from "@/lib/products/types";
 
 interface ProductFiltersProps {
   idPrefix: string;
   filters: CatalogFilters;
-  categories: string[];
+  categories: ProductCategory[];
+  products: Product[];
   onChange: (patch: Partial<CatalogFilters>) => void;
 }
 
@@ -61,8 +63,36 @@ export default function ProductFilters({
   idPrefix,
   filters,
   categories,
+  products,
   onChange,
 }: ProductFiltersProps) {
+  const selectedCategory = categories.find((category) => category.id === filters.category);
+  const categoryProducts = selectedCategory
+    ? products.filter((product) => product.categoryId === selectedCategory.id)
+    : [];
+  const dynamicAttributes = selectedCategory?.attributes.filter((attribute) => attribute.filterable) ?? [];
+
+  function toggleAttribute(id: string, value: string, multi: boolean) {
+    const current = filters.attributes[id] ?? [];
+    if (value === "") {
+      const attributes = { ...filters.attributes };
+      delete attributes[id];
+      onChange({ attributes });
+      return;
+    }
+    const next = multi
+      ? current.includes(value)
+        ? current.filter((selected) => selected !== value)
+        : [...current, value]
+      : current.includes(value)
+        ? []
+        : [value];
+    const attributes = { ...filters.attributes };
+    if (next.length > 0) attributes[id] = next;
+    else delete attributes[id];
+    onChange({ attributes });
+  }
+
   return (
     <div className="space-y-5">
       <Group legend="Category">
@@ -76,16 +106,70 @@ export default function ProductFilters({
         </Option>
         {categories.map((category) => (
           <Option
-            key={category}
-            id={`${idPrefix}-cat-${category}`}
+            key={category.id}
+            id={`${idPrefix}-cat-${category.id}`}
             name={`${idPrefix}-category`}
-            checked={filters.category === category}
-            onChange={() => onChange({ category })}
+            checked={filters.category === category.id}
+            onChange={() => onChange({ category: category.id, attributes: {} })}
           >
-            {category}
+            {category.name}
           </Option>
         ))}
       </Group>
+
+      {selectedCategory && dynamicAttributes.length > 0 && (
+        <section
+          aria-labelledby={`${idPrefix}-category-attributes`}
+          className="space-y-4 rounded-xl border border-accent/20 bg-accent-soft/40 p-3"
+        >
+          <div>
+            <h3 id={`${idPrefix}-category-attributes`} className="text-xs font-bold uppercase tracking-wide text-accent-ink">
+              {selectedCategory.name} filters
+            </h3>
+            <p className="mt-1 text-xs text-fg-muted">Specifications tailored to this category</p>
+          </div>
+          {dynamicAttributes.map((attribute) => {
+            const values = attribute.options ?? Array.from(
+              new Set(categoryProducts.flatMap((product) => {
+                const value = product.attributes[attribute.id];
+                return Array.isArray(value) ? value.map(String) : value === undefined ? [] : [String(value)];
+              })),
+            ).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+            if (values.length === 0) return null;
+            const multi = attribute.type === "multi-select" || attribute.type === "boolean";
+            return (
+              <Group key={attribute.id} legend={attribute.name}>
+                {!multi && (
+                  <Option
+                    id={`${idPrefix}-attr-${attribute.id}-any`}
+                    name={`${idPrefix}-attr-${attribute.id}`}
+                    checked={(filters.attributes[attribute.id] ?? []).length === 0}
+                    onChange={() => toggleAttribute(attribute.id, "", false)}
+                  >
+                    Any
+                  </Option>
+                )}
+                {values.map((value) => {
+                  const inputValue = attribute.type === "boolean" ? value.toLowerCase() === "true" ? "Yes" : "No" : value;
+                  const selectedValue = attribute.type === "boolean" ? String(value.toLowerCase() === "true") : value;
+                  return (
+                    <Option
+                      key={value}
+                      id={`${idPrefix}-attr-${attribute.id}-${value}`.replace(/[^a-zA-Z0-9_-]/g, "-")}
+                      name={`${idPrefix}-attr-${attribute.id}`}
+                      type={multi ? "checkbox" : "radio"}
+                      checked={(filters.attributes[attribute.id] ?? []).includes(selectedValue)}
+                      onChange={() => toggleAttribute(attribute.id, selectedValue, multi)}
+                    >
+                      {inputValue}{attribute.unit ? ` ${attribute.unit}` : ""}
+                    </Option>
+                  );
+                })}
+              </Group>
+            );
+          })}
+        </section>
+      )}
 
       <Group legend="Price">
         <Option

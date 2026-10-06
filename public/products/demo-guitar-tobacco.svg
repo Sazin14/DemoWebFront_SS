@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Tobacco brown finish acoustic guitar">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#885741"/><stop offset="1" stop-color="#382f3b"/></linearGradient></defs>
+  <rect width="600" height="600" fill="url(#g)"/><circle cx="300" cy="285" r="192" fill="#fff" opacity=".1"/>
+  <path d="m174 381 132-132 46 46-132 132q-34 34-63 5-26-26 17-51Z" fill="#81533d"/>
+  <path d="m274 273 99-99 26 26-99 99" fill="#e2c8a2"/><circle cx="172" cy="400" r="56" fill="#543b34"/><circle cx="172" cy="400" r="25" fill="#2d2832"/>
+  <path d="m291 256 27 27m-8-45 27 27m-8-45 27 27m-8-45 27 27m-8-45 27 27" stroke="#fff4df" stroke-width="3"/>
+  <text x="300" y="520" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="4" fill="#fff">TOBACCO BROWN · 6 STRINGS</text>
+</svg>

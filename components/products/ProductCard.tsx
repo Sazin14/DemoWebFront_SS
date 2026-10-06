@@ -20,10 +20,10 @@ const IMAGE_SIZES = "(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw";
 
 export default function ProductCard({
   product,
-  priority = false,
+  eager = false,
 }: {
   product: Product;
-  priority?: boolean;
+  eager?: boolean;
 }) {
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
@@ -58,7 +58,7 @@ export default function ProductCard({
           <ProductImage
             src={product.images[0]}
             alt=""
-            priority={priority}
+            loading={eager ? "eager" : "lazy"}
             sizes={IMAGE_SIZES}
             className={`transition duration-500 ease-out group-hover:scale-[1.04] ${
               outOfStock ? "opacity-60 grayscale" : ""
@@ -79,14 +79,17 @@ export default function ProductCard({
         </Link>
         <div className="pointer-events-none absolute left-2 top-2 flex flex-col items-start gap-1">
           {discount && <span className="badge bg-danger text-canvas shadow-sm">-{discount}%</span>}
+          {product.isNew && <span className="badge bg-surface text-fg shadow-sm">New</span>}
+          {product.featured && <span className="badge bg-accent text-on-accent shadow-sm">Popular</span>}
           {outOfStock && <span className="badge bg-fg text-canvas">Sold out</span>}
         </div>
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 p-3 sm:p-4">
-        <p className="truncate text-xs font-medium uppercase tracking-wide text-fg-subtle">
-          {product.brand}
-        </p>
+        <div className="flex min-w-0 items-center justify-between gap-2">
+          <p className="truncate text-xs font-medium uppercase tracking-wide text-fg-subtle">{product.brand}</p>
+          <p className="shrink-0 text-[10px] font-medium text-fg-subtle">{product.category}</p>
+        </div>
         <h3 className="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-fg">
           <Link
             href={href}

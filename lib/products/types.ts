@@ -1,10 +1,30 @@
-export type ProductCategory =
-  | "Electronics"
-  | "Fashion"
-  | "Home & Living"
-  | "Beauty"
-  | "Sports"
-  | "Accessories";
+export type CategoryAttributeType =
+  | "text"
+  | "number"
+  | "boolean"
+  | "select"
+  | "multi-select";
+
+export type ProductAttributeValue = string | number | boolean | string[];
+
+export interface CategoryAttribute {
+  id: string;
+  name: string;
+  type: CategoryAttributeType;
+  required: boolean;
+  filterable: boolean;
+  options?: string[];
+  unit?: string;
+}
+
+export interface ProductCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  image: string;
+  attributes: CategoryAttribute[];
+}
 
 export interface ProductVariantOption {
   value: string;
@@ -12,6 +32,9 @@ export interface ProductVariantOption {
   priceDelta?: number;
   /** Defaults to true. Unavailable options are shown but cannot be chosen. */
   available?: boolean;
+  sku?: string;
+  stock?: number;
+  image?: string;
 }
 
 /** A selectable option group such as "Size", "Color" or "Storage". */
@@ -23,6 +46,7 @@ export interface ProductVariant {
 export interface Product {
   id: string;
   slug: string;
+  sku: string;
   name: string;
   description: string;
   shortDescription: string;
@@ -31,7 +55,9 @@ export interface Product {
   originalPrice?: number;
   currency: string;
 
-  category: ProductCategory;
+  category: string;
+  categoryId: string;
+  attributes: Record<string, ProductAttributeValue>;
   brand: string;
 
   images: string[];
@@ -46,6 +72,8 @@ export interface Product {
   tags: string[];
 
   featured?: boolean;
+  isNew?: boolean;
+  badges?: string[];
   variants?: ProductVariant[];
 
   createdAt: string;

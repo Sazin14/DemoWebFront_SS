@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s · EcomMS",
   },
   description:
-    "EcomMS is a modern ecommerce platform with secure checkout, trusted sellers, and tracked delivery.",
+    "EcomMS is a customer-facing ecommerce demonstration with category-aware product discovery, cart, checkout and sample order journeys.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

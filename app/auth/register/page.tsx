@@ -5,7 +5,7 @@ import RegisterForm from "@/components/auth/RegisterForm";
 export const metadata: Metadata = {
   title: "Create account",
   description:
-    "Create your EcomMS account to start shopping with secure checkout and order tracking.",
+    "Create a temporary frontend demo account to explore the sample customer dashboard.",
 };
 
 export default function RegisterPage() {
@@ -19,8 +19,7 @@ export default function RegisterPage() {
           </span>
         </h1>
         <p className="mt-2 text-sm leading-6 text-fg-muted">
-          Track your orders, manage your profile, and enjoy a faster checkout
-          experience.
+          Create a temporary browser-only account to explore the customer dashboard and sample orders.
         </p>
       </header>
 

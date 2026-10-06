@@ -13,11 +13,18 @@ connected and must never be used as a production credential. New registrations
 are customer accounts, and their accounts remain in the current browser after
 logout.
 
-## Products & cart (frontend-only, temporary)
+## Customer storefront demo
 
-- `/products`, `/products/[slug]`, `/cart` and a placeholder `/checkout` use **mock data** from `lib/products/mock-data.ts`, accessed only through `lib/products/product-service.ts`. Replace the service bodies with Product API calls later; components don't change.
-- Prices, stock, ratings and reviews are **sample data**. The cart (`ecomms_cart` in localStorage) stores snapshots and is **not authoritative**: a backend must re-validate prices and stock at checkout.
-- Product images in `public/products/` are generated placeholder illustrations.
+- `/`, `/products`, `/products/[slug]`, `/cart` and `/checkout` demonstrate customer product discovery, category-specific filters/specifications, variants and a complete local demo checkout.
+- The catalog contains 47 sample products across 12 departments. Category and attribute definitions live in `lib/products/categories.ts`; product data is centralized in `lib/products/mock-data.ts`.
+- Product and category reads go through `lib/products/product-service.ts`. Reviews, orders and notifications also have small repository boundaries so those demo sources can later be replaced with Product, Order and Notification service clients.
+- Checkout does not collect payment credentials, contact a payment provider or call an order API. A submitted sample order is saved in this browser under `ecomms_demo_orders`; it can be viewed in `/account/orders` and on its order detail page.
+- The cart (`ecomms_cart` in localStorage) stores product snapshots and is **not authoritative**. A backend must re-validate prices and stock when a real order service is connected.
+- Product artwork in `public/products/` is locally stored demonstration illustration, not merchant photography.
+
+## Service boundaries
+
+The intended transition is **UI → repository/service layer → demo data** today, and **UI → service layer → API gateway → microservices** later. The customer-facing flows map to Auth, Product, Order and Notification services. No API endpoints or backend integrations are simulated by this frontend.
 
 ## Theme & design tokens
 

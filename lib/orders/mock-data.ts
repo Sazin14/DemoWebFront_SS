@@ -1,0 +1,87 @@
+import type { DemoOrder } from "./types";
+
+const address = {
+  fullName: "Alex Morgan",
+  address: "42 Cedar Lane",
+  city: "Portland",
+  region: "OR",
+  postalCode: "97205",
+  country: "United States",
+};
+
+export const demoOrders: DemoOrder[] = [
+  {
+    id: "demo-order-10291",
+    number: "ORD-10291",
+    customerName: "Alex Morgan",
+    customerEmail: "alex@example.test",
+    date: "2026-09-17T14:25:00.000Z",
+    status: "delivered",
+    items: [
+      { productId: "hydro-flask-wide-mouth-32", slug: "hydro-flask-wide-mouth-32", name: "Hydro Flask 32 oz Wide Mouth Bottle", image: "/products/hydro-flask-wide-mouth-32-1.svg", unitPrice: 44.95, quantity: 1, currency: "USD", options: { Color: "Pacific" } },
+      { productId: "luma-vitamin-c-serum", slug: "luma-vitamin-c-serum", name: "Luma Skin Vitamin C Brightening Serum", image: "/products/luma-vitamin-c-serum-1.svg", unitPrice: 33.6, quantity: 1, currency: "USD", options: {} },
+    ],
+    subtotal: 78.55,
+    shipping: 0,
+    total: 78.55,
+    address,
+    deliveryMethod: "Standard demo delivery",
+    paymentMethod: "Cash on delivery (demo)",
+    timeline: [
+      { status: "placed", date: "2026-09-17T14:25:00.000Z", note: "Demo order placed" },
+      { status: "confirmed", date: "2026-09-17T15:10:00.000Z", note: "Order confirmation recorded in sample data" },
+      { status: "processing", date: "2026-09-18T09:00:00.000Z", note: "Sample order prepared for dispatch" },
+      { status: "shipped", date: "2026-09-19T12:00:00.000Z", note: "Sample parcel marked as shipped" },
+      { status: "delivered", date: "2026-09-21T16:30:00.000Z", note: "Sample delivery completed" },
+    ],
+  },
+  {
+    id: "demo-order-10274",
+    number: "ORD-10274",
+    customerName: "Alex Morgan",
+    customerEmail: "alex@example.test",
+    date: "2026-10-01T10:42:00.000Z",
+    status: "processing",
+    items: [
+      { productId: "garmin-forerunner-265", slug: "garmin-forerunner-265", name: "Garmin Forerunner 265 GPS Running Watch", image: "/products/garmin-forerunner-265-1.svg", unitPrice: 449.99, quantity: 1, currency: "USD", options: { Color: "Black" } },
+    ],
+    subtotal: 449.99,
+    shipping: 0,
+    total: 449.99,
+    address,
+    deliveryMethod: "Standard demo delivery",
+    paymentMethod: "Credit/debit card (demo selection)",
+    timeline: [
+      { status: "placed", date: "2026-10-01T10:42:00.000Z", note: "Demo order placed" },
+      { status: "confirmed", date: "2026-10-01T11:00:00.000Z", note: "Order confirmation recorded in sample data" },
+      { status: "processing", date: "2026-10-02T08:00:00.000Z", note: "Sample order is being prepared" },
+      { status: "shipped", date: null, note: "Awaiting the next sample status" },
+      { status: "delivered", date: null, note: "Awaiting delivery" },
+    ],
+  },
+  {
+    id: "demo-order-10263",
+    number: "ORD-10263",
+    customerName: "Alex Morgan",
+    customerEmail: "alex@example.test",
+    date: "2026-09-25T08:15:00.000Z",
+    status: "shipped",
+    items: [
+      { productId: "sony-wh-1000xm5", slug: "sony-wh-1000xm5", name: "Sony WH-1000XM5 Wireless Headphones", image: "/products/sony-wh-1000xm5-1.svg", unitPrice: 319.99, quantity: 1, currency: "USD", options: { Color: "Black" } },
+      { productId: "casio-f-91w-digital-watch", slug: "casio-f-91w-digital-watch", name: "Casio F-91W Classic Digital Watch", image: "/products/casio-f-91w-digital-watch-1.svg", unitPrice: 19.95, quantity: 1, currency: "USD", options: {} },
+    ],
+    subtotal: 339.94,
+    shipping: 0,
+    total: 339.94,
+    address,
+    deliveryMethod: "Express demo delivery",
+    paymentMethod: "Mobile banking (demo selection)",
+    timeline: [
+      { status: "placed", date: "2026-09-25T08:15:00.000Z", note: "Demo order placed" },
+      { status: "confirmed", date: "2026-09-25T08:45:00.000Z", note: "Order confirmation recorded in sample data" },
+      { status: "processing", date: "2026-09-26T09:00:00.000Z", note: "Sample order prepared" },
+      { status: "shipped", date: "2026-09-27T13:20:00.000Z", note: "Sample parcel handed to the delivery partner" },
+      { status: "delivered", date: null, note: "Awaiting delivery" },
+    ],
+  },
+];

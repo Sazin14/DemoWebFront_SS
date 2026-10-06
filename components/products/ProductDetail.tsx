@@ -1,17 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Check, ShoppingCart, ShieldCheck, Truck } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { PRODUCT_CATEGORIES } from "@/lib/products/categories";
 import { MAX_LINE_QUANTITY } from "@/lib/cart/cart";
 import {
   getSelectionError,
+  getSelectedImage,
+  getSelectedSku,
+  getSelectedStock,
   getStockStatus,
   getUnitPricing,
   hasVariants,
 } from "@/lib/products/product-utils";
 import type { Product, VariantSelection } from "@/lib/products/types";
+import type { ProductReview } from "@/lib/products/reviews";
 import DemoBadge from "@/components/feedback/DemoBadge";
 import Price from "./Price";
 import ProductGallery from "./ProductGallery";
@@ -20,17 +26,43 @@ import QuantitySelector from "./QuantitySelector";
 import Rating from "./Rating";
 import StockStatus from "./StockStatus";
 
-export default function ProductDetail({ product }: { product: Product }) {
+export default function ProductDetail({
+  product,
+  reviews,
+}: {
+  product: Product;
+  reviews: ProductReview[];
+}) {
   const { addToCart } = useCart();
+  const router = useRouter();
   const [selection, setSelection] = useState<VariantSelection>({});
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
 
-  const outOfStock = getStockStatus(product.stock) === "out-of-stock";
-  const maxQuantity = Math.max(1, Math.min(product.stock, MAX_LINE_QUANTITY));
+  const selectedStock = getSelectedStock(product, selection);
+  const outOfStock = getStockStatus(selectedStock) === "out-of-stock";
+  const maxQuantity = Math.max(1, Math.min(selectedStock, MAX_LINE_QUANTITY));
   const pricing = getUnitPricing(product, selection);
   const missingGroup = (product.variants ?? []).find((group) => !selection[group.name]);
+  const selectedImage = getSelectedImage(product, selection);
+  const selectedSku = getSelectedSku(product, selection);
+  const category = PRODUCT_CATEGORIES.find((item) => item.id === product.categoryId);
+  const specifications = Object.entries(product.attributes)
+    .filter(([key, value]) => key !== "brand" && !(Array.isArray(value) && value.length === 0))
+    .map(([key, value]) => {
+      const attribute = category?.attributes.find((item) => item.id === key);
+      const formattedValue = Array.isArray(value)
+        ? value.join(", ")
+        : typeof value === "boolean"
+          ? value ? "Yes" : "No"
+          : String(value);
+      return {
+        label: attribute?.name ?? key.replace(/([A-Z])/g, " $1").replace(/^./, (letter) => letter.toUpperCase()),
+        value: attribute?.unit && typeof value === "number" ? `${formattedValue} ${attribute.unit}` : formattedValue,
+      };
+    })
+    .filter((item) => item.value.length > 0);
 
   function handleSelect(name: string, value: string) {
     setSelection((current) => ({ ...current, [name]: value }));
@@ -38,24 +70,30 @@ export default function ProductDetail({ product }: { product: Product }) {
     setAdded(false);
   }
 
-  function handleAdd() {
+  function handleAdd(): boolean {
     const problem = getSelectionError(product, selection);
     if (problem) {
       setError(problem);
-      return;
+      return false;
     }
-    const result = addToCart(product, { selection, quantity });
+    const result = addToCart({ ...product, stock: selectedStock }, { selection, quantity });
     if (result.ok) {
       setError(null);
       setAdded(true);
+      return true;
     } else {
       setError(result.error);
+      return false;
     }
   }
 
   return (
     <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-      <ProductGallery images={product.images} name={product.name} />
+      <ProductGallery
+        key={`${product.id}-${selectedImage ?? ""}`}
+        images={selectedImage ? [selectedImage, ...product.images.filter((image) => image !== selectedImage)] : product.images}
+        name={product.name}
+      />
 
       <div className="flex flex-col gap-5">
         <div className="space-y-2">
@@ -78,7 +116,14 @@ export default function ProductDetail({ product }: { product: Product }) {
           currency={product.currency}
           size="lg"
         />
-        <StockStatus stock={product.stock} />
+        <StockStatus stock={selectedStock} />
+
+        <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-fg-subtle">
+          <span>Demo SKU: <span className="font-mono text-fg-muted">{selectedSku}</span></span>
+          <Link href={`/products?category=${product.categoryId}`} className="font-medium text-accent-ink hover:underline">
+            {product.category}
+          </Link>
+        </div>
 
         <p className="leading-7 text-fg-muted">{product.description}</p>
 
@@ -103,7 +148,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                 setAdded(false);
               }}
             />
-            {product.stock <= maxQuantity && product.stock > 0 && (
+            {selectedStock <= maxQuantity && selectedStock > 0 && (
               <span className="text-xs text-fg-subtle">Max {maxQuantity}</span>
             )}
           </div>
@@ -136,6 +181,17 @@ export default function ProductDetail({ product }: { product: Product }) {
               </>
             )}
           </button>
+          {!outOfStock && (
+            <button
+              type="button"
+              onClick={() => {
+                if (handleAdd()) router.push("/checkout");
+              }}
+              className="btn btn-secondary h-13 px-6 text-base"
+            >
+              Buy now
+            </button>
+          )}
           {added && (
             <Link
               href="/cart"
@@ -157,6 +213,58 @@ export default function ProductDetail({ product }: { product: Product }) {
           </li>
         </ul>
       </div>
+
+      <section className="lg:col-span-2">
+        <div className="grid gap-8 border-t border-line pt-8 md:grid-cols-[1fr_1.2fr]">
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-bold tracking-tight">Product details</h2>
+              <DemoBadge label="Category specifications" />
+            </div>
+            <p className="mt-3 max-w-xl text-sm leading-7 text-fg-muted">{product.description}</p>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold tracking-tight">Specifications</h2>
+            <dl className="mt-4 divide-y divide-line rounded-xl border border-line bg-surface">
+              {specifications.map((specification) => (
+                <div key={specification.label} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-4 px-4 py-3 text-sm">
+                  <dt className="text-fg-muted">{specification.label}</dt>
+                  <dd className="font-medium text-fg">{specification.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+
+        <section aria-labelledby="reviews-heading" className="mt-10 border-t border-line pt-8">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 id="reviews-heading" className="text-xl font-bold tracking-tight">Customer reviews</h2>
+              <p className="mt-1 text-sm text-fg-muted">Sample feedback shown for this demonstration product.</p>
+            </div>
+            <Rating rating={product.rating} reviewCount={product.reviewCount} />
+          </div>
+          {reviews.length > 0 ? (
+            <ul className="mt-5 grid gap-4 md:grid-cols-2">
+              {reviews.map((review) => (
+                <li key={review.id} className="rounded-2xl border border-line bg-surface p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-semibold">{review.title}</h3>
+                      <p className="mt-1 text-xs text-fg-subtle">{review.author} · {review.date}</p>
+                    </div>
+                    <Rating rating={review.rating} />
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-fg-muted">{review.body}</p>
+                  {review.verifiedPurchase && <p className="mt-3 text-xs font-medium text-success-ink">Demo verified-purchase label</p>}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-4 rounded-xl border border-dashed border-line-strong p-5 text-sm text-fg-muted">No sample reviews are available for this product yet.</p>
+          )}
+        </section>
+      </section>
     </div>
   );
 }

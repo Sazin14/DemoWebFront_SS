@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Grocery pantry illustration">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9c987"/><stop offset="1" stop-color="#8d9f6a"/></linearGradient></defs>
+  <rect width="600" height="600" fill="url(#g)"/><circle cx="112" cy="126" r="80" fill="#fff" opacity=".13"/>
+  <path d="M174 215h237l-23 250H199Z" fill="#fff4dc"/><path d="M217 216q0-78 76-78t76 78" fill="none" stroke="#fff4dc" stroke-width="17"/>
+  <rect x="224" y="277" width="137" height="108" rx="54" fill="#c66a47"/><path d="M286 278q-25-47 7-78 34 28 8 78" fill="#627c50"/>
+  <circle cx="386" cy="285" r="25" fill="#e3ab4e"/><circle cx="386" cy="285" r="8" fill="#fff4dc" opacity=".8"/>
+  <text x="300" y="508" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="4" fill="#fff" opacity=".88">GOOD THINGS, EVERY DAY</text>
+</svg>

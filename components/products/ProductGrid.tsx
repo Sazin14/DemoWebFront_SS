@@ -14,7 +14,7 @@ export default function ProductGrid({ products }: { products: Product[] }) {
           className="flex min-w-0 animate-reveal"
           style={{ animationDelay: `${Math.min(index, 11) * 25}ms` }}
         >
-          <ProductCard product={product} priority={index < 4} />
+          <ProductCard product={product} eager={index === 0} />
         </li>
       ))}
     </ul>

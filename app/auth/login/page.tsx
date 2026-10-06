@@ -4,7 +4,7 @@ import LoginForm from "@/components/auth/LoginForm";
 export const metadata: Metadata = {
   title: "Sign in",
   description:
-    "Sign in to your EcomMS account to track orders, manage your wishlist, and check out faster.",
+    "Sign in to the EcomMS frontend demo to view your sample customer account and order history.",
 };
 
 export default function LoginPage() {
@@ -18,8 +18,7 @@ export default function LoginPage() {
           </span>
         </h1>
         <p className="mt-2 text-sm leading-6 text-fg-muted">
-          Sign in to your account to continue shopping, track orders, and
-          manage your wishlist.
+          Sign in to this frontend demo to explore your customer dashboard and sample order history.
         </p>
       </header>
       <div className="animate-fade-up [animation-delay:150ms]">
